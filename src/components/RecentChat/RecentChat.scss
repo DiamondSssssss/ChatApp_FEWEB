@@ -1,0 +1,190 @@
+.chat-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: black;
+    height: 100vh;
+    padding: 10px;
+  }
+  
+  .chat-header {
+    padding: 10px 15px;
+    border-bottom: 1px solid #444; // Đổi màu border để phù hợp với dark mode
+  
+    .profile-info {
+      display: flex;
+      align-items: center;
+  
+      .header-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 10px;
+        flex-shrink: 0;
+  
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+  
+      .header-text {
+        flex-grow: 1;
+  
+        h1 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1.2;
+          color: white;
+        }
+  
+        p {
+          margin: 2px 0 0;
+          color: white;
+          font-weight: 100;
+          font-size: 15px;
+          line-height: 1.2;
+        }
+  
+        .instagram-link {
+          display: block;
+          color: #3897f0;
+          text-decoration: none;
+          font-size: 12px;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+  
+  .content-wrapper {
+    background: #2c2c2c;
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  
+  .search-bar {
+    padding: 10px 15px;
+    margin-bottom: 10px; // Giảm margin-bottom
+  
+    input {
+      width: 93%;
+      padding: 8px 12px;
+      border: none; // Loại bỏ border
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: white; // Màu nền tối
+      color: black; // Màu chữ trắng
+  
+      &::placeholder {
+        color: #888; // Màu placeholder xám nhạt
+      }
+    }
+  }
+  
+  .chat-list {
+    overflow-y: auto;
+  }
+  
+  .chat-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 8px; // Bo tròn chat item
+    margin-bottom: 5px; // Khoảng cách giữa các chat item
+  
+    &:hover {
+      background: #3a3a3a; // Màu hover
+    }
+  
+    &.selected {
+      background: #3897f0; // Màu nền xanh dương nhẹ khi được chọn
+  
+      .chat-info {
+        h3, p {
+          color: white; // Đổi màu chữ khi được chọn
+        }
+      }
+  
+      .chat-meta {
+        .time {
+          color: white; // Đổi màu thời gian khi được chọn
+        }
+      }
+    }
+  
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 12px;
+      flex-shrink: 0;
+  
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  
+    .chat-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-grow: 1;
+  
+      .chat-info {
+        flex-grow: 1;
+        margin-right: 10px;
+      
+        h3 {
+          margin: 0 0 4px;
+          font-size: 16px;
+          font-weight: 500;
+          color: white;
+        }
+      
+        .last-message-row {
+          display: flex;
+          align-items: center;
+          gap: 8px; // Khoảng cách giữa lastMessage và thời gian
+      
+          p {
+            margin: 0;
+            color: #bbb;
+            font-size: 14px;
+          }
+      
+          .time {
+            color: #888;
+            font-size: 12px;
+          }
+        }
+      }
+  
+      .chat-meta {
+        text-align: right;
+        flex-shrink: 0;
+      
+        .online-icon {
+          color: #4caf50; // Màu xanh lá cho icon
+          font-size: 12px; // Kích thước icon
+        }
+      }
+    }
+  
+    .sticker-label {
+      color: #888;
+      font-style: italic;
+      font-size: 13px;
+    }
+  }

@@ -1,0 +1,87 @@
+.profile-setup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; // Doubled from 100vh
+    background-color: #000;
+    color: white;
+    text-align: center;
+  
+    .back-button {
+      position: absolute;
+      top: 40px; // Doubled from 20px
+      left: 40px; // Doubled from 20px
+      background: none;
+      border: none;
+      font-size: 64px; // Doubled from 32px
+      color: white;
+      cursor: pointer;
+    }
+  
+    .profile-image {
+      position: relative;
+      width: 300px; // Doubled from 150px
+      height: 300px; // Doubled from 150px
+      border-radius: 50%;
+      overflow: hidden;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+  
+      .upload-icon {
+        position: absolute;
+        bottom: 10px; // Doubled from 5px
+        right: 10px; // Doubled from 5px
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        padding: 10px; // Doubled from 5px
+        cursor: pointer;
+  
+        input {
+          display: none;
+        }
+  
+        span {
+          font-size: 40px; // Doubled from 20px
+        }
+      }
+    }
+  
+    h2 {
+      font-size: 48px; // Doubled from 24px
+      font-weight: bold;
+      margin-top: 40px; // Doubled from 20px
+    }
+  
+    input {
+      width: 600px; // Doubled from 300px
+      padding: 24px; // Doubled from 12px
+      font-size: 36px; // Doubled from 18px
+      margin-top: 20px; // Doubled from 10px
+      border-radius: 10px; // Doubled from 5px
+      border: none;
+    }
+  
+    .continue-button {
+      margin-top: 40px; // Doubled from 20px
+      background: linear-gradient(90deg, #56c5a4, #a6e6cc);
+      border: none;
+      padding: 28px 60px; // Doubled from 14px 30px
+      font-size: 36px; // Doubled from 18px
+      cursor: pointer;
+      border-radius: 50px; // Doubled from 25px
+      color: black;
+      font-weight: bold;
+      width: 80%;
+      max-width: 600px; // Doubled from 300px
+    }
+  }
+  

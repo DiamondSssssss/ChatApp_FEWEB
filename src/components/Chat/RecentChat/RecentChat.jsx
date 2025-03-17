@@ -65,7 +65,7 @@ const RecentChat = ({ onSelectChat, selectedUser }) => {
               </div>
               <div className="chat-content">
                 <div className="chat-info">
-                  <h3>{chat.name}</h3>
+                  <h4>{chat.name}</h4>
                   <div className="last-message-row">
                     <p>
                       {chat.isSticker ? (

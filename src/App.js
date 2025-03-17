@@ -17,7 +17,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Opening />}/>
+          <Route path="/" element={<GetStarted />}/>
           <Route path="/chat-box" element={<ChatBox />}/>
           <Route path="/get-started" element={<GetStarted />}/>
           <Route path="/login" element={<Login />}/>

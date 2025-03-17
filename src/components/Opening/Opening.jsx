@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Opening.scss";
-import { RotateCcw } from "lucide-react";
+import { FiRefreshCcw } from "react-icons/fi"; // Install react-icons if not installed
+
 const Opening = () => {
+  const [showText, setShowText] = useState(false);
+
+  const handleReloadClick = () => {
+    setShowText(true);
+  };
+
   return (
-    <div className="welcome-container">
+    <div className="opening-container">
       <h1 className="welcome-text">Welcome</h1>
-      <div className="reload-icon">
-        <RotateCcw size={50} color="yellow" />
+      <div className="reload-icon" onClick={handleReloadClick}>
+        <FiRefreshCcw />
       </div>
+      {showText && <p className="error-text">Try again</p>}
     </div>
   );
 };

@@ -1,0 +1,27 @@
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #111;
+    color: #69c49c;
+    font-family: Arial, sans-serif;
+  
+    .welcome-text {
+      font-size: 6rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  
+    .reload-icon {
+      margin-top: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out;
+  
+      &:hover {
+        transform: rotate(360deg);
+      }
+    }
+  }
+  

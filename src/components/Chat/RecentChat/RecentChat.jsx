@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import "./RecentChat.scss";
-import defaultAvatar from "../../assets/images/default-avatar.png";
+import defaultAvatar from "../../../assets/images/default-avatar.png";
+import ava from "../../../assets/images/avatar.png";
 import { FaCircle } from "react-icons/fa";
-const RecentChat = () => {
+import { MdPushPin } from "react-icons/md";
+
+const RecentChat = ({ onSelectChat, selectedUser }) => {
   const chats = [
-    {
-      name: "Triết",
-      lastMessage: "Hello",
-      time: "5 mins",
-      unread: 0,
-    },
+    { name: "Triết", lastMessage: "Hello", time: "5 mins", unread: 0 },
     {
       name: "Family Group(5)",
       lastMessage: "Mom sent a sticker",
@@ -17,18 +15,7 @@ const RecentChat = () => {
       unread: 0,
       isSticker: true,
     },
-    {
-      name: "Tái",
-      lastMessage: "Cho vay 5 cú với",
-      time: "1 h",
-      unread: 0,
-    },
-    {
-      name: "ABC",
-      lastMessage: "Hello",
-      time: "5 h",
-      unread: 0,
-    },
+    { name: "ABC", lastMessage: "Hello", time: "5 h", unread: 0 },
     {
       name: "ACd",
       lastMessage: "ACd sent a sticker",
@@ -36,18 +23,11 @@ const RecentChat = () => {
       unread: 0,
       isSticker: true,
     },
-    {
-      name: "Tái",
-      lastMessage: "Cho vay 5 cú với",
-      time: "5 h",
-      unread: 0,
-    },
+    { name: "Tài", lastMessage: "Cho vay 5 cú với", time: "5 h", unread: 0 },
   ];
-  const [selectedChat, setSelectedChat] = useState(null);
 
   return (
     <div className="chat-container">
-      {/* Header */}
       <div className="chat-header">
         <div className="profile-info">
           <div className="header-avatar">
@@ -63,25 +43,25 @@ const RecentChat = () => {
         </div>
       </div>
 
-      {/* Search Bar và Chat List */}
       <div className="content-wrapper">
-        {/* Search Bar */}
         <div className="search-bar">
           <input type="text" placeholder="Search for a chat..." />
         </div>
 
-        {/* Chat List */}
         <div className="chat-list">
           {chats.map((chat, index) => (
             <div
               className={`chat-item ${
-                selectedChat === index ? "selected" : ""
+                selectedUser === chat.name ? "selected" : ""
               }`}
               key={index}
-              onClick={() => setSelectedChat(index)}
+              onClick={() => onSelectChat(chat.name)}
             >
               <div className="chat-avatar">
-                <img src={defaultAvatar} alt={chat.name} />
+                <img src={ava} alt={chat.name} />
+                <div className="pin-icon">
+                  <MdPushPin />
+                </div>
               </div>
               <div className="chat-content">
                 <div className="chat-info">
@@ -99,7 +79,6 @@ const RecentChat = () => {
                 </div>
                 <div className="chat-meta">
                   <FaCircle className="online-icon" />{" "}
-                  {/* Icon tròn màu xanh lá */}
                 </div>
               </div>
             </div>

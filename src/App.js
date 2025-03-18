@@ -6,12 +6,12 @@ import Verification from './components/Verification/Verification';
 import UserSetting from './components/UserSetting/UserSetting';
 import Login from "./components/Login/Login";
 import FriendInfo from "./components/FriendInfo/FriendInfo";
-import FriendList from "./components/FriendList/FriendList";
-import SocialHub from "./components/SocialHub/SocialHub";
-import ChatBox from "./components/Chat/ChatBox/ChatBox";
 import ChatInfo from "./components/Chat/ChatInfo/ChatInfo";
 import Chat from "./components/Chat/Chat";
 import RecentChat from "./components/Chat/RecentChat/RecentChat";
+import FriendList from "./components/Contact/FriendList/FriendList";
+import SocialHub from "./components/Contact/SocialHub/SocialHub";
+import Contact from "./components/Contact/Contact";
 
 function App() {
   return (
@@ -20,7 +20,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Opening />}/>
           <Route path="/chat" element={<Chat />}/>
-          <Route path="/chat-box" element={<ChatBox />}/>
           <Route path="/get-started" element={<GetStarted />}/>
           <Route path="/login" element={<Login />}/>
           <Route path="/verification" element={<Verification />}/>
@@ -30,6 +29,7 @@ function App() {
           <Route path="/friend-list" element={<FriendList />}/>
           <Route path="/recent-chat" element={<RecentChat />}/>
           <Route path="/social-hub" element={<SocialHub />}/>
+          <Route path="/contact" element={<Contact />}/>
         </Routes>
       </BrowserRouter>
     </>

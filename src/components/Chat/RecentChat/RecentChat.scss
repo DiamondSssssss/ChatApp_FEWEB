@@ -59,10 +59,7 @@
 
   .content-wrapper {
     background: #2c2c2c;
-    border-radius: 1rem;
-    padding: 1rem;
-    margin-top: 0.6rem;
-    // max-height: 100vh;
+    padding: 0.6rem;
   }
 
   .search-bar {
@@ -97,6 +94,7 @@
     cursor: pointer;
     border-radius: 8px;
     margin-bottom: 16px;
+    background: #5e5e5e;
 
     &:hover {
       background: #3a3a3a;

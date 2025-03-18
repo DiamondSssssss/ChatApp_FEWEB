@@ -1,6 +1,6 @@
 import React from "react";
 import "./SocialHub.scss";
-import defaultAvatar from "../../assets/images/default-avatar.png";
+import defaultAvatar from "../../../assets/images/avatar.png";
 
 const SocialHub = () => {
   const options = [

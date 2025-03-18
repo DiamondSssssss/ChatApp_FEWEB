@@ -8,7 +8,7 @@ const Chat = () => {
   const [selectedUser, setSelectedUser] = useState("Triết");
 
   return (
-    <div className="chat-app">
+    <div className="chat">
       <div className="recent-chat">
         <RecentChat
           selectedUser={selectedUser}

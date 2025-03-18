@@ -1,0 +1,109 @@
+.social-container {
+  width: 100%;
+  background: black;
+  padding: 5px 0px;
+  height: 100%;
+
+  .social-header {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #ffffff;
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+
+      .header-avatar {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 10px;
+        flex-shrink: 0;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .header-text {
+        flex-grow: 1;
+
+        h1 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 1.2;
+          color: white;
+        }
+
+        p {
+          margin: 2px 0 0;
+          color: white;
+          font-weight: 100;
+          font-size: 15px;
+          line-height: 1.2;
+        }
+
+        .instagram-link {
+          display: block;
+          color: #59afff;
+          text-decoration: none;
+          font-size: 12px;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+
+  .content-wrapper {
+    // background: #2c2c2c;
+    padding: 0.6rem;
+  }
+  .search-bar {
+    padding: 1rem 0px;
+    margin-bottom: 0.6rem;
+
+    input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: white;
+      color: black;
+
+      &::placeholder {
+        color: #888;
+      }
+    }
+  }
+
+  .option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-item {
+    width: 100%;
+    background: #5e5e5e;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+
+    &.selected{
+      background: #216e74;
+    }
+  }
+
+  .option-item:hover {
+    background: #909090;
+  }
+}

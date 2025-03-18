@@ -1,0 +1,159 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+.friend-list {
+  font-family: Arial, sans-serif;
+  background: #000; // Nền đen
+  color: #fff; // Chữ trắng toàn bộ
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(255,255,255,0.1); // Đổi màu shadow
+  width: 100%; // Thêm vào
+  max-width: 100%; // Thay đổi từ 600px
+  margin: 0; // Bỏ margin auto
+
+  &__header {
+    border-bottom: 2px solid #333; // Viền tối
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-between;
+    // align-items: center;
+    gap:15px;
+  }
+
+  &__title {
+    font-size: 24px;
+    margin: 0;
+  }
+
+  &__total {
+    color: #ffffff; // Màu chữ nhạt
+    font-size: 14px;
+  }
+
+  // Nhóm bạn
+  .friend-group {
+    margin-bottom: 20px;
+
+    &__letter {
+      color: #888; // Màu ký tự nhóm
+      font-size: 17px;
+      margin: 0 0 10px 0;
+      padding-left: 10px;
+    }
+
+    &__items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  // Item bạn
+  .friend-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #3f3f3f; // Nền thẻ tối hơn
+    border-radius: 8px;
+    transition: all 0.2s;
+    border: 1px solid #333; // Thêm viền
+
+    &:hover {
+      background: #777777; // Màu hover sáng hơn
+      transform: translateX(5px);
+    }
+  }
+
+  .friend-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .friend-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #444; // Viền avatar
+  }
+
+  .friend-name {
+    font-size: 15px;
+  }
+
+  .friend-action {
+    background: none;
+    border: none;
+    color: #ccc; // Màu icon
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  // Controls
+  .friend-controls {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .search-box {
+    position: relative;
+    flex-grow: 1;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #444;
+    border-radius: 20px;
+    font-size: 14px;
+    background: #3f3f3f;
+    color: #ffffff;
+
+    &:focus {
+      outline: none;
+      border-color: #666;
+    }
+
+    &::placeholder {
+      color: #ffffff;
+    }
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #f2f2f2;
+  }
+
+  .sort-button {
+    padding: 10px 30px;
+    background: #3f3f3f;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      background: #777777;
+    }
+  }
+}

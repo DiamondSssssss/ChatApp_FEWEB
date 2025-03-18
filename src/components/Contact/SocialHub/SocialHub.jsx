@@ -2,7 +2,7 @@ import React from "react";
 import "./SocialHub.scss";
 import defaultAvatar from "../../../assets/images/avatar.png";
 
-const SocialHub = () => {
+const SocialHub = ({ selectedGroup, setSelectedGroup }) => {
   const options = [
     "Danh sách bạn bè",
     "Danh sách nhóm",
@@ -36,7 +36,13 @@ const SocialHub = () => {
 
         <div className="option-list">
           {options.map((option, index) => (
-            <button key={index} className="option-item">
+            <button
+              key={index}
+              className={`option-item ${
+                selectedGroup === option ? "selected" : ""
+              }`}
+              onClick={() => setSelectedGroup(option)}
+            >
               {option}
             </button>
           ))}

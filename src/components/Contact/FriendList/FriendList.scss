@@ -1,25 +1,31 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css");
 
 .friend-list {
   font-family: Arial, sans-serif;
-  background: #000; // Nền đen
-  color: #fff; // Chữ trắng toàn bộ
+  background: #000;
+  color: #fff;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(255,255,255,0.1); // Đổi màu shadow
-  width: 100%; // Thêm vào
-  max-width: 100%; // Thay đổi từ 600px
-  margin: 0; // Bỏ margin auto
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+  margin: 0;
+  
+  position: relative;
+  width: 100%;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); // Thay đổi width thay vì transform
+  overflow: hidden;
+
+  // Khi panel mở
+  &.shrinked {
+    width: calc(100% - 300px); // Co lại bằng đúng kích thước panel
+  }
 
   &__header {
-    border-bottom: 2px solid #333; // Viền tối
+    border-bottom: 1px solid #ffffff;
     padding-bottom: 15px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    // justify-content: space-between;
-    // align-items: center;
-    gap:15px;
+    gap: 15px;
   }
 
   &__title {
@@ -28,16 +34,15 @@
   }
 
   &__total {
-    color: #ffffff; // Màu chữ nhạt
+    color: #ffffff;
     font-size: 14px;
   }
 
-  // Nhóm bạn
   .friend-group {
     margin-bottom: 20px;
 
     &__letter {
-      color: #888; // Màu ký tự nhóm
+      color: #888;
       font-size: 17px;
       margin: 0 0 10px 0;
       padding-left: 10px;
@@ -50,19 +55,18 @@
     }
   }
 
-  // Item bạn
   .friend-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px;
-    background: #3f3f3f; // Nền thẻ tối hơn
+    background: #3f3f3f;
     border-radius: 8px;
     transition: all 0.2s;
-    border: 1px solid #333; // Thêm viền
+    border: 1px solid #333;
 
     &:hover {
-      background: #777777; // Màu hover sáng hơn
+      background: #777777;
       transform: translateX(5px);
     }
   }
@@ -78,7 +82,7 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #444; // Viền avatar
+    border: 2px solid #444;
   }
 
   .friend-name {
@@ -88,7 +92,7 @@
   .friend-action {
     background: none;
     border: none;
-    color: #ccc; // Màu icon
+    color: #ccc;
     cursor: pointer;
     padding: 5px;
     transition: color 0.2s;
@@ -98,7 +102,6 @@
     }
   }
 
-  // Controls
   .friend-controls {
     margin-bottom: 20px;
     display: flex;
@@ -140,7 +143,7 @@
   }
 
   .sort-button {
-    padding: 10px 30px;
+    padding: 10px 100px;
     background: #3f3f3f;
     border: 1px solid #333;
     color: #fff;
@@ -154,6 +157,262 @@
 
     &:hover {
       background: #777777;
+    }
+  }
+
+  .info-panel {
+    position: fixed;
+    right: -300px;
+    top: 0;
+    width: 300px;
+    height: 100vh;
+    background: #1a1a1a;
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+
+    &.open {
+      right: 0;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      // padding: 0.6rem;
+      margin-top: 15px;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ffffff;
+
+      h3 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        color: #888;
+        font-size: 1.8rem;
+        line-height: 1;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+
+    .profile-avatar {
+      text-align: center;
+      margin: 20px 0;
+
+      img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #444;
+      }
+    }
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin: 1.5rem 0;
+      padding: 0 1.2rem;
+
+      .leave-btn {
+        background: #b50c25 !important;
+        width: 100%;
+        padding: 12px;
+        
+        &:hover {
+          background: #8a091b !important;
+        }
+      }
+      .action-btn {
+        flex: 1;
+        padding: 0.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        
+        &.message-btn {
+          background: #216e74;
+          color: white;
+
+          &:hover {
+            background: #1a565a;
+          }
+        }
+
+        &.call-btn {
+          background: #4caf50;
+          color: white;
+
+          &:hover {
+            background: #3d8b40;
+          }
+        }
+      }
+    }
+    .panel-content {
+      .info-item {
+        margin-bottom: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .label {
+          color: #888;
+          font-size: 0.95rem;
+        }
+
+        .value {
+          color: #fff;
+          font-weight: 500;
+          font-size: 1rem;
+        }
+      }
+    }
+
+    .group-name {
+      text-align: center;
+      margin: 15px 0;
+      font-size: 1.4rem;
+      color: #fff;
+    }
+
+    .delete-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 1.5rem 0;
+      padding: 0 1.2rem;
+
+      .action-btn {
+        flex: 1;
+        padding: 0.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        &.leave-btn {
+          background: #b50c25 !important;
+          width: 100%;
+          padding: 12px;
+          color: white;
+          
+          &:hover {
+            background: #8a091b !important;
+          }
+        }
+        &.message-btn {
+          background: #0653ec;
+          color: white;
+
+          &:hover {
+            background: #040685;
+          }
+        }
+
+        &.delete-btn {
+          background: #b50c25;
+          color: white;
+
+          &:hover {
+            background: #640404;
+          }
+        }
+      }
+    }
+    .panel-footer {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+
+      .verification-btn {
+        width: 100%;
+        padding: 12px;
+        background: #216e74;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.95rem;
+
+        &:hover {
+          background: #1a565a;
+        }
+      }
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .friend-action {
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: rotate(90deg) scale(1.1);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .friend-list {
+    &.shrinked {
+      width: 0; // Trên mobile ẩn hoàn toàn phần trái
+    }
+
+    .info-panel {
+      width: 100%;
+      right: -100%;
+
+      &.open {
+        right: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .info-panel {
+    .group-name {
+      font-size: 1.2rem;
+    }
+    
+    .action-buttons,
+    .delete-buttons {
+      flex-direction: column;
+      gap: 10px;
     }
   }
 }

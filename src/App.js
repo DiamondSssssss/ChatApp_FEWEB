@@ -13,6 +13,9 @@ import FriendList from "./components/Contact/FriendList/FriendList";
 import SocialHub from "./components/Contact/SocialHub/SocialHub";
 import Contact from "./components/Contact/Contact";
 import Setting from "./components/Setting/Setting";
+import Profile from "./components/Profile/Profile";
+import Notification from "./components/Notification/Notification";
+import Appearance from "./components/Appearance/Appearance";
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
           <Route path="/social-hub" element={<SocialHub />}/>
           <Route path="/contact" element={<Contact />}/>
           <Route path={'/setting'} element={<Setting/>}/>
+          <Route path={'/profile'} element={<Profile/>}/>
+          <Route path={'/notification'} element={<Notification/>}/>
+          <Route path={'/appearance'} element={<Appearance/>}/>
         </Routes>
       </BrowserRouter>
     </>

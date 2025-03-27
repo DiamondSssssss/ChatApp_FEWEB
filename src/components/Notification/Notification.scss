@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #121212;
+  color: #fff;
+}
+
+.notification-container {
+  width: 100%;
+  max-width: 500px; // Increased width
+  margin: auto;
+  padding: 40px;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  .back-icon {
+    position: absolute;
+    left: 0;
+    font-size: 40px; // Bigger icon
+    cursor: pointer;
+  }
+
+  h2 {
+    font-size: 42px; // Bigger title
+    font-weight: 800;
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 3px; // Thicker divider
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  margin: 20px 0;
+}
+
+.settings {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 26px; // Bigger text
+  }
+}
+
+/* Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px; // Bigger switch
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; // Bigger toggle button
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #4caf50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Cancel Button */
+.cancel-btn {
+  width: 100%;
+  padding: 20px; // Bigger button
+  font-size: 24px; // Bigger text
+  font-weight: 700;
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.3s;
+  margin-top: 30px;
+
+  &:hover {
+    background: #388e3c;
+  }
+}

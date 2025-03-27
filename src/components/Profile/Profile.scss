@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #121212;
+  color: #fff;
+}
+
+.profile-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+/* Header */
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  font-size: 40px;  // Increased font size
+  font-weight: 700;
+  padding-bottom: 20px;
+
+  .back-arrow,
+  .settings-icon {
+    font-size: 32px;
+    cursor: pointer;
+  }
+
+  .back-arrow {
+    margin-left: 10px;
+  }
+
+  .settings-icon {
+    margin-right: 10px;
+  }
+}
+
+.divider {
+  width: 100%;
+  max-width: 600px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  margin: 25px 0;
+}
+
+/* Profile Info */
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+
+  .avatar-wrapper {
+    position: relative;
+    width: 120px;  // Increased avatar size
+    height: 120px;
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .camera-icon {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: #ddd;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #000;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  }
+
+  .user-details {
+    text-align: left;
+
+    h2 {
+      font-size: 28px;  // Increased name font size
+      font-weight: 700;
+    }
+
+    .username {
+      font-size: 20px;  // Increased username font size
+      color: #aaa;
+    }
+
+    .instagram-link {
+      font-size: 20px;  // Increased Instagram link font size
+      color: #00ffaa;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+/* Options */
+.profile-options {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .option-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 20px;
+    font-weight: 600;
+    background: #2e7d32;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s;
+
+    &:hover {
+      background: #1b5e20;
+    }
+
+    &.cancel {
+      background: #d32f2f;
+
+      &:hover {
+        background: #b71c1c;
+      }
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 20px;
+  }
+
+  .profile-header {
+    font-size: 35px;
+  }
+
+  .profile-info {
+    gap: 15px;
+  }
+
+  .profile-info .avatar-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .user-details {
+    h2 {
+      font-size: 24px;
+    }
+    .username, .instagram-link {
+      font-size: 18px;
+    }
+  }
+
+  .profile-options .option-btn {
+    font-size: 18px;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-header {
+    font-size: 30px;
+  }
+
+  .profile-info {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .profile-info .avatar-wrapper {
+    width: 90px;
+    height: 90px;
+  }
+
+  .profile-options .option-btn {
+    font-size: 16px;
+  }
+}

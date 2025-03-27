@@ -1,16 +1,20 @@
 .chat-container {
   width: 100%;
   background: black;
-  padding: 5px 0px;
+  // padding: 5px 0px;
   height: 100%;
 
   .chat-header {
-    padding: 0.8rem 1rem;
+    // padding: 0.8rem 1rem;
     border-bottom: 1px solid #ffffff;
+    position: relative; 
 
     .profile-info {
       display: flex;
       align-items: center;
+      position: relative;
+      top: -0.8rem;
+      left: 1rem;
 
       .header-avatar {
         width: 4rem;

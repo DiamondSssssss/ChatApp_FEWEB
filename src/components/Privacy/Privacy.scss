@@ -1,0 +1,256 @@
+.privacy-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1a1a1a;
+    overflow: hidden;
+  }
+  
+  .privacy-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 500px;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  
+    .header {
+        position: relative;
+        width: 100%;
+        margin-bottom: 2rem;
+    
+        .back-button {
+          position: absolute;
+          left: 0;
+          top: 0;
+          background: none;
+          border: none;
+          color: white;
+          font-size: 2rem;
+          cursor: pointer;
+          z-index: 10;
+        }
+    
+        .title-container {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          position: relative;
+    
+          h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+          }
+        }
+    
+        // Thanh ngang dưới tiêu đề
+        .title-container::after {
+          content: '';
+          position: absolute;
+          bottom: -0.5rem;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background-color: #4a4a4a;
+        }
+    }
+  
+    .settings {
+      width: 100%;
+      margin-bottom: 3rem;
+  
+      .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+  
+        span {
+          font-size: 1.8rem;
+          font-weight: 500;
+        }
+  
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 4rem;
+          height: 2rem;
+  
+          input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+          }
+  
+          .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 2rem;
+  
+            &:before {
+              position: absolute;
+              content: '';
+              height: 1.6rem;
+              width: 1.6rem;
+              left: 0.2rem;
+              bottom: 0.2rem;
+              background-color: white;
+              transition: 0.4s;
+              border-radius: 50%;
+            }
+          }
+  
+          input:checked + .slider {
+            background-color: #00c4b4;
+          }
+  
+          input:checked + .slider:before {
+            transform: translateX(2rem);
+          }
+        }
+      }
+    }
+  
+    .buttons {
+      display: flex;
+      gap: 4rem;
+  
+      .apply-button,
+      .cancel-button {
+        background-color: #00c4b4;
+        color: white;
+        border: none;
+        border-radius: 0.8rem;
+        padding: 1rem 4rem;
+        font-size: 1.8rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+  
+        &:hover {
+          background-color: #00a89a;
+        }
+      }
+  
+      .cancel-button {
+        background-color: #4a4a4a;
+        &:hover {
+          background-color: #3a3a3a;
+        }
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 700px) {
+    .privacy-container {
+      width: 95%;
+      padding: 10px;
+  
+      .header {
+        margin-bottom: 1.5rem;
+  
+        .back-button {
+          font-size: 1.8rem;
+        }
+  
+        h1 {
+          font-size: 2rem;
+        }
+      }
+  
+      .settings {
+        .setting-item {
+          margin-bottom: 1.5rem;
+  
+          span {
+            font-size: 1.5rem;
+          }
+  
+          .switch {
+            width: 3.5rem;
+            height: 1.8rem;
+  
+            .slider:before {
+              height: 1.4rem;
+              width: 1.4rem;
+              left: 0.2rem;
+              bottom: 0.2rem;
+            }
+  
+            input:checked + .slider:before {
+              transform: translateX(1.7rem);
+            }
+          }
+        }
+      }
+  
+      .buttons {
+        .apply-button,
+        .cancel-button {
+          padding: 0.8rem 3rem;
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .privacy-container {
+      .header {
+        margin-bottom: 1rem;
+  
+        .back-button {
+          font-size: 1.5rem;
+        }
+  
+        h1 {
+          font-size: 1.8rem;
+        }
+      }
+  
+      .settings {
+        .setting-item {
+          margin-bottom: 1rem;
+  
+          span {
+            font-size: 1.3rem;
+          }
+  
+          .switch {
+            width: 3rem;
+            height: 1.5rem;
+  
+            .slider:before {
+              height: 1.2rem;
+              width: 1.2rem;
+              left: 0.15rem;
+              bottom: 0.15rem;
+            }
+  
+            input:checked + .slider:before {
+              transform: translateX(1.5rem);
+            }
+          }
+        }
+      }
+  
+      .buttons {
+        .apply-button,
+        .cancel-button {
+          padding: 0.6rem 2.5rem;
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }

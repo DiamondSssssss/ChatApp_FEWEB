@@ -1,16 +1,18 @@
 .social-container {
   width: 100%;
   background: black;
-  padding: 5px 0px;
   height: 100%;
 
   .social-header {
-    padding: 0.8rem 1rem;
     border-bottom: 1px solid #ffffff;
+    position: relative; 
 
     .profile-info {
       display: flex;
       align-items: center;
+      position: relative;
+      top: -0.8rem;
+      left: 1rem;
 
       .header-avatar {
         width: 4rem;
@@ -58,9 +60,9 @@
   }
 
   .content-wrapper {
-    // background: #2c2c2c;
     padding: 0.6rem;
   }
+
   .search-bar {
     padding: 1rem 0px;
     margin-bottom: 0.6rem;
@@ -98,7 +100,7 @@
     font-size: 14px;
     cursor: pointer;
 
-    &.selected{
+    &.selected {
       background: #216e74;
     }
   }

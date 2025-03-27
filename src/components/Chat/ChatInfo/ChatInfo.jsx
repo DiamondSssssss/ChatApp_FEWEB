@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ChatInfo.scss";
 import { FaPhone, FaVideo } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { BsCamera } from "react-icons/bs";
 import { LuInfo } from "react-icons/lu";
 import { AiOutlinePicture } from "react-icons/ai";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt, FaEllipsisH } from "react-icons/fa";
 
 const ChatInfo = ({ avatar, selectedUser }) => {
-  const messages = [
+  const [messages, setMessages] = useState([
     {
       id: 1,
       type: "received",
       text: "Xem cái này hay nè! 😍",
-      avatar: avatar, // Ảnh avatar
+      avatar: avatar,
       timestamp: "16:46",
     },
     {
@@ -39,9 +39,26 @@ const ChatInfo = ({ avatar, selectedUser }) => {
       text: "123o",
       timestamp: "16:46 • Read",
     },
-  ];
+  ]);
 
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(null);
+
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -51,10 +68,37 @@ const ChatInfo = ({ avatar, selectedUser }) => {
     }
   };
 
-  const [showDetails, setShowDetails] = useState(false);
-
   const toggleDetails = () => {
     setShowDetails(!showDetails);
+  };
+
+  const toggleDropdown = (messageId) => {
+    setShowDropdown(messageId === showDropdown ? null : messageId);
+  };
+
+  const handleDeleteMessage = (messageId) => {
+    setMessages(messages.filter((msg) => msg.id !== messageId));
+    setShowDropdown(null);
+  };
+
+  const handleReplyMessage = (messageId) => {
+    alert(`Trả lời tin nhắn ID: ${messageId}`);
+    setShowDropdown(null);
+  };
+
+  const handleEditMessage = (messageId) => {
+    const newText = prompt(
+      "Chỉnh sửa tin nhắn:",
+      messages.find((msg) => msg.id === messageId).text
+    );
+    if (newText) {
+      setMessages(
+        messages.map((msg) =>
+          msg.id === messageId ? { ...msg, text: newText } : msg
+        )
+      );
+    }
+    setShowDropdown(null);
   };
 
   return (
@@ -87,18 +131,59 @@ const ChatInfo = ({ avatar, selectedUser }) => {
                     <span>{msg.date}</span>
                   </div>
                 ) : (
-                  <div key={msg.id} className={`message ${msg.type}`}>
-                    <div className="message-content">
-                      {msg.type === "received" && msg.avatar && (
-                        <img
-                          src={msg.avatar}
-                          alt="Avatar"
-                          className="message-image"
-                        />
-                      )}
-                      <p>{msg.text}</p>
-                      <span className="time">{msg.timestamp}</span>
+                  <div key={msg.id} className={`message-wrapper ${msg.type}`}>
+                    <div className={`message ${msg.type}`}>
+                      <div className="message-content">
+                        {msg.type === "received" && msg.avatar && (
+                          <div className="message-image-wrapper">
+                            <img
+                              src={msg.avatar}
+                              alt="Avatar"
+                              className="message-image"
+                            />
+                          </div>
+                        )}
+                        <div className="message-text">
+                          <p>{msg.text}</p>
+                          <span className="time">{msg.timestamp}</span>
+                        </div>
+                      </div>
                     </div>
+                    {/* <div className="message-actions">
+                      <FaEllipsisH
+                        className="action-icon"
+                        onClick={() => toggleDropdown(msg.id)}
+                      />
+                      {showDropdown === msg.id && (
+                        <div className="dropdown" ref={dropdownRef}>
+                          {msg.type === "received" ? (
+                            <>
+                              <button
+                                onClick={() => handleDeleteMessage(msg.id)}
+                              >
+                                Xóa
+                              </button>
+                              <button
+                                onClick={() => handleReplyMessage(msg.id)}
+                              >
+                                Trả lời
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => handleDeleteMessage(msg.id)}
+                              >
+                                Xóa
+                              </button>
+                              <button onClick={() => handleEditMessage(msg.id)}>
+                                Chỉnh sửa
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div> */}
                   </div>
                 )
               )}
@@ -115,8 +200,6 @@ const ChatInfo = ({ avatar, selectedUser }) => {
                 style={{ display: "none" }}
                 onChange={handleImageChange}
               />
-
-              {/* Icon chọn ảnh từ thư viện */}
               <label htmlFor="imageUpload" className="upload-icon">
                 <AiOutlinePicture className="input-icon" />
               </label>
@@ -136,7 +219,7 @@ const ChatInfo = ({ avatar, selectedUser }) => {
               <div className="panel-header">
                 <h3>Thông tin hội thoại</h3>
                 <button className="close-btn" onClick={toggleDetails}>
-                  &times;
+                  ×
                 </button>
               </div>
               <div className="header-avatar">

@@ -5,7 +5,6 @@ import GetStarted from './components/GetStarted/GetStarted';
 import Verification from './components/Verification/Verification';
 import UserSetting from './components/UserSetting/UserSetting';
 import Login from "./components/Login/Login";
-import FriendInfo from "./components/FriendInfo/FriendInfo";
 import ChatInfo from "./components/Chat/ChatInfo/ChatInfo";
 import Chat from "./components/Chat/Chat";
 import RecentChat from "./components/Chat/RecentChat/RecentChat";
@@ -16,6 +15,10 @@ import Setting from "./components/Setting/Setting";
 import Profile from "./components/Profile/Profile";
 import Notification from "./components/Notification/Notification";
 import Appearance from "./components/Appearance/Appearance";
+import SetPinCode from "./components/PinCode/SetPinCode/SetPinCode";
+import ConfirmPinCode from "./components/PinCode/ConfirmPinCode/ConfirmPinCode";
+import Privacy from "./components/Privacy/Privacy";
+import InviteFriend from "./components/InviteFriend/InviteFriend";
 
 function App() {
   return (
@@ -29,7 +32,6 @@ function App() {
           <Route path="/verification" element={<Verification />}/>
           <Route path="/user-setting" element={<UserSetting />}/>
           <Route path="/chat-info" element={<ChatInfo />}/>
-          <Route path="/friend-info" element={<FriendInfo />}/>
           <Route path="/friend-list" element={<FriendList />}/>
           <Route path="/recent-chat" element={<RecentChat />}/>
           <Route path="/social-hub" element={<SocialHub />}/>
@@ -38,6 +40,11 @@ function App() {
           <Route path={'/profile'} element={<Profile/>}/>
           <Route path={'/notification'} element={<Notification/>}/>
           <Route path={'/appearance'} element={<Appearance/>}/>
+          <Route path="/privacy" element={<Privacy />}/>
+          <Route path="/pincode-set" element={<SetPinCode />}/>
+          <Route path="/pincode-confirm" element={<ConfirmPinCode />}/>
+          <Route path="/invite-friend" element={<InviteFriend />}/>
+          <Route path="*" element={<div>Not Found</div>} />
         </Routes>
       </BrowserRouter>
     </>

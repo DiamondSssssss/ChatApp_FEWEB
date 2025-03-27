@@ -2,8 +2,7 @@
     display: flex;
     height: 100vh;
     background-color: #121212;
-    // gap: 20px;
-    // padding: 20px;
+    overflow: hidden;
   
     .friend-list-container {
       overflow-y: auto;

@@ -4,119 +4,28 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow-y: auto; 
+    overflow-y: auto;
     transition: all 0.3s ease;
 
     &.shrinked {
       margin-right: 300px;
     }
 
-    @media (min-width: 768px) {
-      .chat-header {
-        padding: 22px 30px;
-      }
-
-      .chat-content {
-        padding: 20px 30px;
-      }
-    }
-
-    @media (max-width: 767px) {
-      .chat-header {
-        padding: 15px;
-        flex-direction: row; 
-        align-items: center;
-
-        .profile-info {
-          gap: 8px;
-
-          .header-avatar {
-            width: 40px;
-            height: 40px;
-          }
-
-          .header-text {
-            h3 {
-              font-size: 16px;
-            }
-
-            .active-status {
-              font-size: 12px;
-            }
-          }
-        }
-
-        .header-icons {
-          gap: 15px;
-          
-          .icon {
-            font-size: 18px;
-          }
-        }
-      }
-
-      .chat-content {
-        padding: 10px 15px;
-
-        .message {
-          max-width: 80%;
-          padding: 8px;
-          
-          .message-content {
-            p {
-              font-size: 14px;
-            }
-          }
-        }
-      }
-
-      .chat-input {
-        padding: 12px;
-        
-        input {
-          padding: 10px;
-          font-size: 14px;
-        }
-      }
-    }
-    @media (max-width: 480px) {
-      .chat-header {
-        flex-wrap: wrap;
-        
-        .header-icons {
-          order: 3;
-          width: 100%;
-          justify-content: space-between;
-          margin-top: 10px;
-        }
-      }
-
-      .chat-content {
-        .message {
-          max-width: 90%;
-        }
-      }
-
-      .chat-input {
-        flex-wrap: wrap;
-        
-        .upload-icon {
-          margin: 0 5px;
-        }
-      }
-    }
-
     .chat-header {
-      padding: 22px;
+      padding: 0.35rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #ffffff;
+      position: relative;
 
       .profile-info {
         display: flex;
         align-items: center;
         gap: 12px;
+        position: relative;
+        top: -0.8rem;
+        left: 1rem;
 
         .header-avatar {
           width: 50px;
@@ -177,40 +86,115 @@
       flex-direction: column;
       gap: 0.5rem;
 
-      .message {
-        max-width: 50%;
-        padding: 10px 10px;
-        border-radius: 10px;
+      .message-wrapper {
+        display: flex;
+        align-items: center;
+        position: relative;
+        gap: 8px;
 
         &.received {
-          background: #222;
-          align-self: flex-start;
+          justify-content: flex-start; // Tin nhắn nhận căn trái
+          .message-actions {
+            position: absolute;
+            right: -10px; // Giảm khoảng cách để icon gần hơn
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1; // Đảm bảo icon không bị che khuất
 
-          .time {
-            color: #888;
+            .dropdown {
+              right: 0; // Dropdown căn phải
+            }
           }
         }
 
         &.sent {
-          background: #3897f0;
-          align-self: flex-end;
+          justify-content: flex-end; // Tin nhắn gửi căn phải
+          .message-actions {
+            position: absolute;
+            left: -10px; // Giảm khoảng cách để icon gần hơn
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 1; // Đảm bảo icon không bị che khuất
 
-          .time {
-            color: rgba(255, 255, 255, 0.8);
+            .dropdown {
+              left: 0; // Dropdown căn trái
+            }
           }
         }
 
-        .message-content {
-          p {
-            color: white;
-            margin: 0;
-            font-size: 15px;
+        &:hover {
+          .message-actions {
+            opacity: 1;
+          }
+        }
+
+        .message {
+          max-width: 50%;
+          padding: 10px 10px;
+          border-radius: 10px;
+
+          &.received {
+            background: #222;
+
+            .time {
+              color: #888;
+            }
+
+            .message-content {
+              display: flex;
+              flex-direction: column;
+              align-items: center; // Căn giữa các phần tử bên trong
+
+              .message-image-wrapper {
+                margin-bottom: 8px; // Khoảng cách giữa ảnh và nội dung
+                display: flex;
+                justify-content: center; // Đảm bảo ảnh căn giữa
+                width: 100%;
+              }
+
+              .message-image {
+                max-width: 60%; // Giới hạn chiều rộng ảnh
+                max-height: 150px; // Giới hạn chiều cao ảnh
+                object-fit: cover;
+                border-radius: 8px; // Bo góc ảnh
+              }
+
+              .message-text {
+                text-align: center; // Căn giữa nội dung và thời gian
+              }
+            }
           }
 
-          .time {
-            font-size: 12px;
-            margin-top: 4px;
-            display: block;
+          &.sent {
+            background: #3897f0;
+
+            .time {
+              color: rgba(255, 255, 255, 0.8);
+            }
+
+            .message-content {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-end; // Căn phải nội dung và thời gian cho tin nhắn gửi
+            }
+          }
+
+          .message-content {
+            p {
+              color: white;
+              margin: 0;
+              font-size: 15px;
+            }
+
+            .time {
+              font-size: 12px;
+              margin-top: 4px;
+              display: block;
+            }
           }
         }
       }
@@ -288,6 +272,7 @@
         cursor: pointer;
       }
     }
+
     .header-avatar {
       display: flex;
       flex-direction: column;
@@ -310,7 +295,7 @@
         margin-top: 10px;
         position: relative;
         width: 100%;
-      
+
         .user-name {
           font-size: 1rem;
           font-weight: bold;
@@ -318,7 +303,7 @@
           text-align: center;
           flex: 1;
         }
-      
+
         .edit-icon {
           font-size: 1rem;
           color: #ccc;
@@ -326,14 +311,12 @@
           position: absolute;
           right: 80px;
           transition: color 0.2s;
-      
+
           &:hover {
             color: #3897f0;
           }
         }
       }
-      
-      
     }
 
     .section {

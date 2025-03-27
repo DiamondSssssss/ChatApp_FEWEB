@@ -12,6 +12,7 @@ import RecentChat from "./components/Chat/RecentChat/RecentChat";
 import FriendList from "./components/Contact/FriendList/FriendList";
 import SocialHub from "./components/Contact/SocialHub/SocialHub";
 import Contact from "./components/Contact/Contact";
+import Setting from "./components/Setting/Setting";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/recent-chat" element={<RecentChat />}/>
           <Route path="/social-hub" element={<SocialHub />}/>
           <Route path="/contact" element={<Contact />}/>
+          <Route path={'/setting'} element={<Setting/>}/>
         </Routes>
       </BrowserRouter>
     </>

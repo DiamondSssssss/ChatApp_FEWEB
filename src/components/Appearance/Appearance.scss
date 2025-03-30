@@ -8,18 +8,34 @@
 
 body {
   font-family: "Poppins", sans-serif;
+  background-color: #f4f4f4;
+  color: #121212;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Dark Mode */
+body.dark-mode {
   background-color: #121212;
   color: #fff;
 }
 
 .appearance-container {
   width: 100%;
-  max-width: 500px; // Increased width
+  max-width: 500px;
   margin: auto;
   padding: 40px;
   text-align: center;
+  transition: background 0.3s;
 }
 
+/* Dark Mode for Appearance Container */
+body.dark-mode .appearance-container {
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  padding: 30px;
+}
+
+/* Header */
 .header {
   display: flex;
   align-items: center;
@@ -29,24 +45,30 @@ body {
   .back-icon {
     position: absolute;
     left: 0;
-    font-size: 40px; // Bigger icon
+    font-size: 40px;
     cursor: pointer;
   }
 
   h2 {
-    font-size: 42px; // Bigger title
+    font-size: 42px;
     font-weight: 800;
   }
 }
 
+/* Divider */
 .divider {
   width: 100%;
-  height: 3px; // Thicker divider
-  background: rgba(255, 255, 255, 0.3);
+  height: 3px;
+  background: rgba(0, 0, 0, 0.2);
   border: none;
   margin: 20px 0;
 }
 
+body.dark-mode .divider {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Settings */
 .settings {
   margin-top: 30px;
   display: flex;
@@ -57,7 +79,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 26px; // Bigger text
+    font-size: 26px;
   }
 }
 
@@ -65,7 +87,7 @@ body {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px; // Bigger switch
+  width: 60px;
   height: 34px;
 }
 
@@ -90,7 +112,7 @@ body {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px; // Bigger toggle button
+  height: 26px;
   width: 26px;
   left: 4px;
   bottom: 4px;
@@ -99,12 +121,22 @@ body {
   border-radius: 50%;
 }
 
+/* Toggle Active */
 input:checked + .slider {
   background-color: #4caf50;
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
+}
+
+/* Dark Mode Toggle Styling */
+body.dark-mode .slider {
+  background-color: #555;
+}
+
+body.dark-mode input:checked + .slider {
+  background-color: #4caf50;
 }
 
 /* Font Button */
@@ -127,8 +159,8 @@ input:checked + .slider:before {
 /* Cancel Button */
 .cancel-btn {
   width: 100%;
-  padding: 20px; // Bigger button
-  font-size: 24px; // Bigger text
+  padding: 20px;
+  font-size: 24px;
   font-weight: 700;
   background: #4caf50;
   color: #fff;
@@ -142,4 +174,16 @@ input:checked + .slider:before {
   &:hover {
     background: #388e3c;
   }
+}
+
+/* Apply dark mode to buttons */
+body.dark-mode .font-btn,
+body.dark-mode .cancel-btn {
+  background: #333;
+  color: #fff;
+}
+
+body.dark-mode .font-btn:hover,
+body.dark-mode .cancel-btn:hover {
+  background: #222;
 }

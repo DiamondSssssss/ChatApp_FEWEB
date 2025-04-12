@@ -2,12 +2,13 @@
   width: 100%;
   background: black;
   // padding: 5px 0px;
-  height: 100%;
+  height: fit-content;
+  overflow-x: hidden;
 
   .chat-header {
     // padding: 0.8rem 1rem;
     border-bottom: 1px solid #ffffff;
-    position: relative; 
+    position: relative;
 
     .profile-info {
       display: flex;

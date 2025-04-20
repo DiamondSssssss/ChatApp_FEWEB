@@ -1,9 +1,25 @@
 import React from "react";
 import { useState } from "react";
 import "./UserSetting.scss";
-const UserSetting = () => {
-  const [username, setUsername] = useState("");
+import { register } from "../../services/auth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
+const UserSetting = () => {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const phoneNumber = localStorage.getItem("phoneNumber");
+
+  const handleSubmit = async () => {
+    const user = { phoneNumber, username };
+    let res = await register(user);
+    if (res) {
+      toast.success("Đăng ký thành công");
+      navigate("/profile");
+    } else {
+      toast.error("Đăng ký thất bại");
+    }
+  };
   return (
     <div className="profile-setup-container">
       {/* Back Button */}
@@ -28,7 +44,9 @@ const UserSetting = () => {
       />
 
       {/* Continue Button */}
-      <button className="continue-button">Continue</button>
+      <button className="continue-button" onClick={handleSubmit}>
+        Continue
+      </button>
     </div>
   );
 };

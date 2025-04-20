@@ -1,11 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import "./ChatInfo.scss";
 import { FaPhone, FaVideo } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import { BsCamera } from "react-icons/bs";
 import { LuInfo } from "react-icons/lu";
 import { AiOutlinePicture } from "react-icons/ai";
-import { FaPencilAlt, FaEllipsisH } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
+import { TbMessageReply } from "react-icons/tb";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const ChatInfo = ({ avatar, selectedUser }) => {
   const [messages, setMessages] = useState([
@@ -15,16 +17,13 @@ const ChatInfo = ({ avatar, selectedUser }) => {
       text: "Xem cái này hay nè! 😍",
       avatar: avatar,
       timestamp: "16:46",
+      date: "17/03/2025",
     },
     {
       id: 2,
       type: "sent",
       text: "123o",
       timestamp: "16:46 • Read",
-    },
-    {
-      id: 3,
-      type: "divider",
       date: "17/03/2025",
     },
     {
@@ -32,33 +31,53 @@ const ChatInfo = ({ avatar, selectedUser }) => {
       type: "received",
       text: "Vịt bay",
       timestamp: "16:46",
+      date: "17/03/2025",
     },
     {
       id: 5,
       type: "sent",
       text: "123o",
       timestamp: "16:46 • Read",
+      date: "17/03/2025",
+    },
+    {
+      id: 6,
+      type: "received",
+      text: "Oke nhé.",
+      replyTo: {
+        sender: "You",
+        text: "Vịt bay",
+      },
+      timestamp: "16:46",
+      date: "17/03/2025",
     },
   ]);
 
+  const [inputText, setInputText] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [replyingTo, setReplyingTo] = useState(null);
 
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(null);
+  // Extract unique images from messages, including avatar
+  const getChatImages = () => {
+    const images = new Set();
+    messages.forEach((msg) => {
+      if (msg.image) {
+        images.add(msg.image);
       }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+      if (msg.avatar) {
+        images.add(msg.avatar);
+      }
+      if (msg.replyTo && msg.replyTo.image) {
+        images.add(msg.replyTo.image);
+      }
+      if (msg.replyTo && msg.replyTo.avatar) {
+        images.add(msg.replyTo.avatar);
+      }
+    });
+    return Array.from(images);
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -72,33 +91,103 @@ const ChatInfo = ({ avatar, selectedUser }) => {
     setShowDetails(!showDetails);
   };
 
-  const toggleDropdown = (messageId) => {
-    setShowDropdown(messageId === showDropdown ? null : messageId);
-  };
-
   const handleDeleteMessage = (messageId) => {
     setMessages(messages.filter((msg) => msg.id !== messageId));
-    setShowDropdown(null);
   };
 
   const handleReplyMessage = (messageId) => {
-    alert(`Trả lời tin nhắn ID: ${messageId}`);
-    setShowDropdown(null);
+    const message = messages.find((msg) => msg.id === messageId);
+    if (message) {
+      setReplyingTo({
+        id: message.id,
+        sender: message.type === "sent" ? "You" : selectedUser,
+        text: message.text,
+        image: message.image || null,
+        avatar: message.avatar || null,
+      });
+    }
   };
 
-  const handleEditMessage = (messageId) => {
-    const newText = prompt(
-      "Chỉnh sửa tin nhắn:",
-      messages.find((msg) => msg.id === messageId).text
-    );
-    if (newText) {
-      setMessages(
-        messages.map((msg) =>
-          msg.id === messageId ? { ...msg, text: newText } : msg
-        )
-      );
+  const cancelReply = () => {
+    setReplyingTo(null);
+  };
+
+  const handleSendMessage = () => {
+    if (!inputText.trim() && !selectedImage) return;
+
+    const currentDate = new Date();
+    const formattedDate = `${currentDate
+      .getDate()
+      .toString()
+      .padStart(2, "0")}/${(currentDate.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${currentDate.getFullYear()}`;
+    const formattedTime = `${currentDate
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${currentDate
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+
+    const newMessage = {
+      id: messages.length + 1,
+      type: "sent",
+      text: inputText || "",
+      image: selectedImage || null,
+      replyTo: replyingTo
+        ? {
+            sender: replyingTo.sender,
+            text: replyingTo.text,
+            image: replyingTo.image,
+            avatar: replyingTo.avatar,
+          }
+        : null,
+      timestamp: `${formattedTime} • Sent`,
+      date: formattedDate,
+    };
+
+    const lastMessage = messages
+      .filter((msg) => msg.type !== "divider")
+      .slice(-1)[0];
+    const newMessages = [...messages];
+
+    if (!lastMessage || lastMessage.date !== formattedDate) {
+      newMessages.push({
+        id: messages.length + 2,
+        type: "divider",
+        date: formattedDate,
+      });
     }
-    setShowDropdown(null);
+
+    newMessages.push(newMessage);
+
+    setMessages(newMessages);
+    setInputText("");
+    setSelectedImage(null);
+    setReplyingTo(null);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const openImagePreview = (imageUrl) => {
+    setPreviewImage(imageUrl);
+  };
+
+  const closeImagePreview = () => {
+    setPreviewImage(null);
+  };
+
+  const getDayAbbreviation = (dateString) => {
+    const [day, month, year] = dateString.split("/").map(Number);
+    const date = new Date(year, month - 1, day);
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    return days[date.getDay()];
   };
 
   return (
@@ -125,12 +214,17 @@ const ChatInfo = ({ avatar, selectedUser }) => {
               </div>
             </div>
             <div className="chat-content">
-              {messages.map((msg) =>
-                msg.type === "divider" ? (
-                  <div key={msg.id} className="date-divider">
-                    <span>{msg.date}</span>
-                  </div>
-                ) : (
+              {messages.reduce((acc, msg, index) => {
+                if (index === 0 || messages[index - 1].date !== msg.date) {
+                  const dayAbbrev = getDayAbbreviation(msg.date);
+                  acc.push(
+                    <div key={`divider-${msg.date}`} className="date-divider">
+                      <span>{`${dayAbbrev}, ${msg.date}`}</span>
+                    </div>
+                  );
+                }
+                if (msg.type === "divider") return acc;
+                acc.push(
                   <div key={msg.id} className={`message-wrapper ${msg.type}`}>
                     <div className={`message ${msg.type}`}>
                       <div className="message-content">
@@ -143,75 +237,142 @@ const ChatInfo = ({ avatar, selectedUser }) => {
                             />
                           </div>
                         )}
-                        <div className="message-text">
-                          <p>{msg.text}</p>
-                          <span className="time">{msg.timestamp}</span>
-                        </div>
+                        {msg.replyTo && (
+                          <div className="reply-preview">
+                            <div className="reply-sender">
+                              {msg.replyTo.sender}
+                            </div>
+                            {(msg.replyTo.image || msg.replyTo.avatar) && (
+                              <div className="reply-image-wrapper">
+                                <img
+                                  src={msg.replyTo.image || msg.replyTo.avatar}
+                                  alt="Reply image"
+                                  className="reply-image"
+                                  onClick={() =>
+                                    openImagePreview(
+                                      msg.replyTo.image || msg.replyTo.avatar
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
+                            {msg.replyTo.text && (
+                              <div className="reply-text">
+                                {msg.replyTo.text}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {msg.image && (
+                          <div className="message-image-wrapper">
+                            <img
+                              src={msg.image}
+                              alt="Sent image"
+                              className="message-image"
+                              onClick={() => openImagePreview(msg.image)}
+                            />
+                          </div>
+                        )}
+                        {msg.text && (
+                          <div className="message-text">
+                            <p>{msg.text}</p>
+                          </div>
+                        )}
+                        <span className="time">{msg.timestamp}</span>
+                      </div>
+                      <div className="message-actions">
+                        <TbMessageReply
+                          className="action-icon"
+                          onClick={() => handleReplyMessage(msg.id)}
+                          title="Trả lời"
+                        />
+                        <RiDeleteBin6Line
+                          className="action-icon"
+                          onClick={() => handleDeleteMessage(msg.id)}
+                          title="Xóa"
+                        />
                       </div>
                     </div>
-                    {/* <div className="message-actions">
-                      <FaEllipsisH
-                        className="action-icon"
-                        onClick={() => toggleDropdown(msg.id)}
-                      />
-                      {showDropdown === msg.id && (
-                        <div className="dropdown" ref={dropdownRef}>
-                          {msg.type === "received" ? (
-                            <>
-                              <button
-                                onClick={() => handleDeleteMessage(msg.id)}
-                              >
-                                Xóa
-                              </button>
-                              <button
-                                onClick={() => handleReplyMessage(msg.id)}
-                              >
-                                Trả lời
-                              </button>
-                            </>
-                          ) : (
-                            <>
-                              <button
-                                onClick={() => handleDeleteMessage(msg.id)}
-                              >
-                                Xóa
-                              </button>
-                              <button onClick={() => handleEditMessage(msg.id)}>
-                                Chỉnh sửa
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      )}
-                    </div> */}
                   </div>
-                )
-              )}
+                );
+                return acc;
+              }, [])}
             </div>
 
             <div className="chat-input">
-              <label htmlFor="cameraUpload" className="upload-icon">
-                <BsCamera className="input-icon" />
-              </label>
-              <input
-                type="file"
-                id="cameraUpload"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-              />
-              <label htmlFor="imageUpload" className="upload-icon">
-                <AiOutlinePicture className="input-icon" />
-              </label>
-              <input
-                type="file"
-                id="imageUpload"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageChange}
-              />
-              <input type="text" placeholder="aaa shiba" />
-              <IoSend className="send-icon" />
+              {replyingTo && (
+                <div className="reply-input-preview">
+                  <div className="reply-input-content">
+                    <div className="reply-sender">{replyingTo.sender}</div>
+                    {(replyingTo.image || replyingTo.avatar) && (
+                      <div className="reply-image-wrapper">
+                        <img
+                          src={replyingTo.image || replyingTo.avatar}
+                          alt="Reply image"
+                          className="reply-image"
+                          onClick={() =>
+                            openImagePreview(
+                              replyingTo.image || replyingTo.avatar
+                            )
+                          }
+                        />
+                      </div>
+                    )}
+                    {replyingTo.text && (
+                      <div className="reply-text">{replyingTo.text}</div>
+                    )}
+                  </div>
+                  <button className="cancel-reply" onClick={cancelReply}>
+                    ×
+                  </button>
+                </div>
+              )}
+              <div className="input-row">
+                {selectedImage && (
+                  <div className="image-preview">
+                    <img
+                      src={selectedImage}
+                      alt="Preview"
+                      className="preview-image"
+                      onClick={() => openImagePreview(selectedImage)}
+                    />
+                    <button
+                      className="remove-image"
+                      onClick={() => setSelectedImage(null)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+                <label htmlFor="cameraUpload" className="upload-icon">
+                  <BsCamera className="input-icon" />
+                </label>
+                <input
+                  type="file"
+                  id="cameraUpload"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+                <label htmlFor="imageUpload" className="upload-icon">
+                  <AiOutlinePicture className="input-icon" />
+                </label>
+                <input
+                  type="file"
+                  id="imageUpload"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+                <input
+                  type="text"
+                  placeholder="aaa shiba"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
+                <IoSend className="send-icon" onClick={handleSendMessage} />
+              </div>
             </div>
           </div>
           {showDetails && (
@@ -234,10 +395,22 @@ const ChatInfo = ({ avatar, selectedUser }) => {
                 <div className="section">
                   <h4>Ảnh/Video</h4>
                   <div className="media-grid">
-                    <img src={avatar} alt="Avatar" className="media-image" />
-                    <img src={avatar} alt="Avatar" className="media-image" />
-                    <img src={avatar} alt="Avatar" className="media-image" />
-                    <img src={avatar} alt="Avatar" className="media-image" />
+                    {getChatImages().length > 0 ? (
+                      getChatImages().map((image, index) => (
+                        <img
+                          key={`media-${index}`}
+                          src={image}
+                          alt={`Chat media ${index + 1}`}
+                          className="media-image"
+                          onClick={() => openImagePreview(image)}
+                          onError={(e) => {
+                            e.target.style.display = "none"; // Hide broken images
+                          }}
+                        />
+                      ))
+                    ) : (
+                      <p>Không có ảnh/video</p>
+                    )}
                   </div>
                 </div>
 
@@ -249,9 +422,9 @@ const ChatInfo = ({ avatar, selectedUser }) => {
                 <div className="section">
                   <h4>Link</h4>
                   <div className="link-list">
-                    <a href="facebook.com/126372947847847284">Facebook</a>
-                    <a href="geeglo.com">Geeglo</a>
-                    <a href="yuotube.com">YouTube</a>
+                    <a href="https://facebook.com">Facebook</a>
+                    <a href="https://geeglo.com">Geeglo</a>
+                    <a href="https://youtube.com">YouTube</a>
                   </div>
                 </div>
 
@@ -261,6 +434,11 @@ const ChatInfo = ({ avatar, selectedUser }) => {
           )}
         </div>
       </div>
+      {previewImage && (
+        <div className="image-modal" onClick={closeImagePreview}>
+          <img src={previewImage} alt="Full size" className="modal-image" />
+        </div>
+      )}
     </>
   );
 };

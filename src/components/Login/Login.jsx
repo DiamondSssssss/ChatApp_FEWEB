@@ -17,6 +17,7 @@ const Login = () => {
     try {
       console.log("Đang khởi tạo reCAPTCHA...");
       window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
         "recaptcha-container",
         {
           size: "normal",
@@ -30,8 +31,8 @@ const Login = () => {
             setMessage("reCAPTCHA hết hạn, vui lòng thử lại.");
             setIsError(true);
           },
-        },
-        auth
+        }
+        
       );
       console.log("Đang render reCAPTCHA...");
       await window.recaptchaVerifier.render();

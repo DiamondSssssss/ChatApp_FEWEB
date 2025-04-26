@@ -32,7 +32,6 @@ const Login = () => {
             setIsError(true);
           },
         }
-        
       );
       console.log("Đang render reCAPTCHA...");
       await window.recaptchaVerifier.render();

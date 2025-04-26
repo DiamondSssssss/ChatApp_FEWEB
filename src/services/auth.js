@@ -11,3 +11,8 @@ export const register = async (registerObj) => {
   const res = await api.post(`/auth/register`, registerObj);
   return res.data;
 };
+
+export const getCurrentUser = async () => {
+  const res = await api.get(`/auth/some-protected-endpoint`);
+  return res.data;
+};

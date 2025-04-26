@@ -9,6 +9,8 @@ import { FaPencilAlt } from "react-icons/fa";
 import { TbMessageReply } from "react-icons/tb";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { connectWebSocket, sendMessage } from "../../../services/webSocket";
+import {fetchMessages} from "../../../services/chatService"
+
 const ChatInfo = ({ avatar, selectedUser }) => {
   const [messages, setMessages] = useState([]);
 
@@ -26,14 +28,36 @@ const ChatInfo = ({ avatar, selectedUser }) => {
 
 
   useEffect(() => {
+
+
+    const loadOldMessages = async () => {
+      const oldMessages = await fetchMessages("1"); 
+      const mappedMessages = oldMessages.map(msg => {
+        const dateObj = new Date(msg.timeStamp);
+        return {
+          id: Date.now() + Math.random(), 
+          text: msg.content,
+          sender: msg.sender,
+          type: msg.sender === localStorage.getItem("userName") ? "sent" : "received",
+          timeStamp: msg.timeStamp,
+          day: getDayAbbreviation(msg.timeStamp),
+          timestamp: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        };
+      });
+      setMessages(mappedMessages);
+    };
+  
+    loadOldMessages();
+
+
     connectWebSocket("1", (msg) => {
       console.log(msg);
       const dateObj = new Date(msg.timeStamp);
       const newMsg = {
-        id: Date.now(), 
+        id: Date.now() + Math.random(), 
         text: msg.content,
         sender: msg.sender,
-        type: msg.sender === "You" ? "sent" : "received",
+        type: msg.sender === localStorage.getItem("userName") ? "sent" : "received",
         timeStamp: msg.timeStamp,
         day: getDayAbbreviation(msg.timeStamp),
         timestamp: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -47,7 +71,7 @@ const ChatInfo = ({ avatar, selectedUser }) => {
   
 
   const handleSendMessage = () => {
-    sendMessage("1", inputText, "You");
+    sendMessage("1", inputText, localStorage.getItem("userName"));
     setInputText("");
 };
 

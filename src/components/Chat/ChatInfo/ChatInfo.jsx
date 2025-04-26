@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ChatInfo.scss";
 import { FaPhone, FaVideo } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
@@ -8,50 +8,49 @@ import { AiOutlinePicture } from "react-icons/ai";
 import { FaPencilAlt } from "react-icons/fa";
 import { TbMessageReply } from "react-icons/tb";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
+import { connectWebSocket, sendMessage } from "../../../services/webSocket";
 const ChatInfo = ({ avatar, selectedUser }) => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: "received",
-      text: "Xem cái này hay nè! 😍",
-      avatar: avatar,
-      timestamp: "16:46",
-      date: "17/03/2025",
-    },
-    {
-      id: 2,
-      type: "sent",
-      text: "123o",
-      timestamp: "16:46 • Read",
-      date: "17/03/2025",
-    },
-    {
-      id: 4,
-      type: "received",
-      text: "Vịt bay",
-      timestamp: "16:46",
-      date: "17/03/2025",
-    },
-    {
-      id: 5,
-      type: "sent",
-      text: "123o",
-      timestamp: "16:46 • Read",
-      date: "17/03/2025",
-    },
-    {
-      id: 6,
-      type: "received",
-      text: "Oke nhé.",
-      replyTo: {
-        sender: "You",
-        text: "Vịt bay",
-      },
-      timestamp: "16:46",
-      date: "17/03/2025",
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
+
+
+
+  const getDayAbbreviation = (isoString) => {
+    if (!isoString) return "";
+    const date = new Date(isoString);
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    return days[date.getDay()];
+  };
+  
+
+  
+
+
+  useEffect(() => {
+    connectWebSocket("1", (msg) => {
+      console.log(msg);
+      const dateObj = new Date(msg.timeStamp);
+      const newMsg = {
+        id: Date.now(), 
+        text: msg.content,
+        sender: msg.sender,
+        type: msg.sender === "You" ? "sent" : "received",
+        timeStamp: msg.timeStamp,
+        day: getDayAbbreviation(msg.timeStamp),
+        timestamp: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+  
+      setMessages((prev) => [...prev, newMsg]);
+    });
+  }, []);
+
+
+  
+
+  const handleSendMessage = () => {
+    sendMessage("1", inputText, "You");
+    setInputText("");
+};
+
 
   const [inputText, setInputText] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -112,62 +111,6 @@ const ChatInfo = ({ avatar, selectedUser }) => {
     setReplyingTo(null);
   };
 
-  const handleSendMessage = () => {
-    if (!inputText.trim() && !selectedImage) return;
-
-    const currentDate = new Date();
-    const formattedDate = `${currentDate
-      .getDate()
-      .toString()
-      .padStart(2, "0")}/${(currentDate.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}/${currentDate.getFullYear()}`;
-    const formattedTime = `${currentDate
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${currentDate
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}`;
-
-    const newMessage = {
-      id: messages.length + 1,
-      type: "sent",
-      text: inputText || "",
-      image: selectedImage || null,
-      replyTo: replyingTo
-        ? {
-            sender: replyingTo.sender,
-            text: replyingTo.text,
-            image: replyingTo.image,
-            avatar: replyingTo.avatar,
-          }
-        : null,
-      timestamp: `${formattedTime} • Sent`,
-      date: formattedDate,
-    };
-
-    const lastMessage = messages
-      .filter((msg) => msg.type !== "divider")
-      .slice(-1)[0];
-    const newMessages = [...messages];
-
-    if (!lastMessage || lastMessage.date !== formattedDate) {
-      newMessages.push({
-        id: messages.length + 2,
-        type: "divider",
-        date: formattedDate,
-      });
-    }
-
-    newMessages.push(newMessage);
-
-    setMessages(newMessages);
-    setInputText("");
-    setSelectedImage(null);
-    setReplyingTo(null);
-  };
-
   const handleKeyPress = (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
@@ -183,12 +126,6 @@ const ChatInfo = ({ avatar, selectedUser }) => {
     setPreviewImage(null);
   };
 
-  const getDayAbbreviation = (dateString) => {
-    const [day, month, year] = dateString.split("/").map(Number);
-    const date = new Date(year, month - 1, day);
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    return days[date.getDay()];
-  };
 
   return (
     <>

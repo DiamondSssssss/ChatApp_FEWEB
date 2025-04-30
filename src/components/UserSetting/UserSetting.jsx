@@ -23,7 +23,9 @@ const UserSetting = () => {
   return (
     <div className="profile-setup-container">
       {/* Back Button */}
-      <button className="back-button">&#8592;</button>
+      <button className="back-button" onClick={() => navigate("/verification")}>
+        &#8592;
+      </button>
 
       {/* Profile Image Upload */}
       <div className="profile-image">

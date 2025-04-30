@@ -21,7 +21,7 @@ const Privacy = () => {
     <div className="privacy-wrapper">
       <div className="privacy-container">
         <div className="header">
-          <button className="back-button" onClick={() => navigate("/")}>
+          <button className="back-button" onClick={() => navigate("/setting")}>
             ←
           </button>
           <div className="title-container">

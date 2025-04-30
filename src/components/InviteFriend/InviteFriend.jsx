@@ -44,7 +44,7 @@ const InviteFriend = () => {
     <div className="invite-friends-wrapper">
       <div className="invite-friends-container">
         <div className="header">
-          <button className="back-button" onClick={() => navigate("/")}>
+          <button className="back-button" onClick={() => navigate("/setting")}>
             ←
           </button>
           <div className="title-container">

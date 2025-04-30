@@ -1,12 +1,13 @@
 import React from "react";
 import "./Setting.scss";
 import { FaShieldAlt, FaBell, FaSun, FaUserPlus } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 const Setting = () => {
+    const navigate = useNavigate();
     return (
         <div className="settings-container">
             <header className="settings-header">
-                <span className="back-arrow">←</span>
+                <span className="back-arrow" onClick={() => navigate("/chat")}>←</span>
                 <h1>Settings</h1>
             </header>
 
@@ -15,11 +16,7 @@ const Setting = () => {
             <section className="account-section">
                 <h2>Account</h2>
                 <div className="account-info">
-                    <img
-                        src="/avatar.png"
-                        alt="User Avatar"
-                        className="avatar"
-                    />
+                    <img src="/avatar.png" alt="User Avatar" className="avatar" />
                     <div className="user-details">
                         <h3>Phuc Le Quang</h3>
                         <p className="username">@Present111</p>
@@ -35,19 +32,19 @@ const Setting = () => {
             <section className="others-section">
                 <h2>Others</h2>
                 <ul className="settings-options">
-                    <li>
+                    <li onClick={() => navigate("/privacy")}>
                         <FaShieldAlt className="icon" />
                         Privacy
                     </li>
-                    <li>
+                    <li onClick={() => navigate("/notification")}>
                         <FaBell className="icon" />
                         Notifications
                     </li>
-                    <li>
+                    <li onClick={() => navigate("/appearance")}>
                         <FaSun className="icon" />
                         Appearance
                     </li>
-                    <li>
+                    <li onClick={() => navigate("/invite-friend")}>
                         <FaUserPlus className="icon" />
                         Invite a Friend
                     </li>

@@ -4,9 +4,12 @@ import defaultAvatar from "../../../assets/images/default-avatar.png";
 import ava from "../../../assets/images/avatar.png";
 import { FaCircle } from "react-icons/fa";
 import { MdPushPin } from "react-icons/md";
+import { FiSettings } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const RecentChat = ({ onSelectChat, selectedUser }) => {
   const [searchQuery, setSearchQuery] = useState(""); // Thêm trạng thái tìm kiếm
+  const navigate = useNavigate();
 
   const chats = [
     { name: "Triết", lastMessage: "Hello", time: "5 mins", unread: 0 },
@@ -41,7 +44,13 @@ const RecentChat = ({ onSelectChat, selectedUser }) => {
             <img src={defaultAvatar} alt="Profile" />
           </div>
           <div className="header-text">
-            <h1>Phuc Le Quang</h1>
+            <div className="header-name-with-icon">
+              <FiSettings
+                style={{ color: "white", fontSize: "20px", cursor: "pointer" }}
+                onClick={() => navigate("/setting")}
+              />
+              <h1>Phuc Le Quang</h1>
+            </div>
             <p>@Present!!!</p>
             <a href="instagram.com/present!!!" className="instagram-link">
               instagram.com/present!!!

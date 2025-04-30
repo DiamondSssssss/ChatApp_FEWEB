@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Appearance.scss";
-
+import { useNavigate } from "react-router-dom";
 const Appearance = () => {
   // Load preferences from localStorage or set default values
   const [darkMode, setDarkMode] = useState(
@@ -10,7 +10,7 @@ const Appearance = () => {
     localStorage.getItem("font") || "Times New Roman"
   );
   const [showFontOptions, setShowFontOptions] = useState(false);
-
+  const navigate = useNavigate();
   // Available font options
   const fonts = [
     "Arial",
@@ -40,7 +40,7 @@ const Appearance = () => {
     <div className={`appearance-container ${darkMode ? "dark" : ""}`}>
       {/* Header Section */}
       <div className="header">
-        <span className="back-icon" onClick={() => window.history.back()}>
+        <span className="back-icon" onClick={() => navigate("/setting")}>
           ←
         </span>
         <h2>Appearance</h2>

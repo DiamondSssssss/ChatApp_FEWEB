@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import "./Notification.scss";
 import { FaArrowLeft } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 const Notification = ({ onBack }) => {
     const [messageNotification, setMessageNotification] = useState(true);
     const [notificationSounds, setNotificationSounds] = useState(true);
-
+    const navigate = useNavigate();
     return (
         <div className="notification-container">
             <div className="header">
-                <FaArrowLeft className="back-icon" onClick={onBack} />
+                <FaArrowLeft className="back-icon" onClick={() => navigate("/setting")} />
                 <h2>Notification</h2>
             </div>
             <hr className="divider" />

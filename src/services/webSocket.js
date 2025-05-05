@@ -4,7 +4,7 @@ import SockJS from "sockjs-client";
 let stompClient = null;
 
 export const connectWebSocket = (roomId, onMessageReceived) => {
-  const socket = new SockJS("http://localhost:8081/chat");
+  const socket = new SockJS("http://localhost:8080/chat");
 
   stompClient = new Client({
     webSocketFactory: () => socket,

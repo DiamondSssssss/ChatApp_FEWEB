@@ -35,6 +35,8 @@ const Login = () => {
       }
 
       if (serverMsg === "New user, please register username") {
+        localStorage.setItem("phoneNumber", formattedPhone);
+        toast.success("Mời bạn đang ký tên người dùng");
         navigate("/user-setting");
       } else {
         const userInfoResponse = await getCurrentUser();

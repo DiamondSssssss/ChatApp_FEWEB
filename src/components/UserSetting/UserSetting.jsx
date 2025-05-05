@@ -31,7 +31,7 @@ const UserSetting = () => {
   return (
     <div className="profile-setup-container">
       {/* Back Button */}
-      <button className="back-button" onClick={() => navigate("/verification")}>
+      <button className="back-button" onClick={() => navigate("/login")}>
         &#8592;
       </button>
 

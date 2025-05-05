@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import "./UserSetting.scss";
-import { register } from "../../services/auth";
+import { getCurrentUser, register } from "../../services/auth";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -12,10 +12,18 @@ const UserSetting = () => {
 
   const handleSubmit = async () => {
     const user = { phoneNumber, username };
-    let res = await register(user);
-    if (res) {
+    let response = await register(user);
+    const { message: serverMsg, accessToken, refreshToken } = response;
+    if (accessToken && refreshToken) {
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+    }
+    const userInfoResponse = await getCurrentUser();
+    if (userInfoResponse.message) {
+      const username = userInfoResponse.message.split("User found: ")[1];
       toast.success("Đăng ký thành công");
-      navigate("/profile");
+      localStorage.setItem("userName", username);
+      navigate("/login");
     } else {
       toast.error("Đăng ký thất bại");
     }

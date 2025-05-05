@@ -115,7 +115,7 @@
         }
       }
 
-      .chat-meta {
+      .chat-ta {
         .time {
           color: white;
         }
@@ -179,6 +179,8 @@
             margin: 0;
             color: #bbb;
             font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
           }
 
           .time {
@@ -202,30 +204,35 @@
       display: flex;
       align-items: center;
       gap: 8px; // spacing between name and icon
-    
+
       h1 {
         margin: 0;
         font-size: 1.2rem;
         white-space: nowrap; // Prevent text wrapping
       }
-    
+
       .settings-icon {
         font-size: 1.2rem;
         color: #666;
         cursor: pointer;
         transition: color 0.2s;
-    
+
         &:hover {
           color: #000;
         }
       }
     }
-    
-    
+
     .sticker-label {
       color: #888;
       font-style: italic;
       font-size: 13px;
+    }
+
+    .message-content {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

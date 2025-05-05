@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import "./Verification.scss";
-import { login,getCurrentUser } from "../../services/auth";
+import { login, getCurrentUser } from "../../services/auth";
 import { toast } from "react-toastify";
 
 const Verification = () => {
@@ -77,14 +77,12 @@ const Verification = () => {
         navigate("/user-setting");
       } else {
         const userInfoResponse = await getCurrentUser();
-        if(userInfoResponse.message)
-        {
-        const username = userInfoResponse.message.split("User found: ")[1];
-        toast.success("Đăng nhập thành công");
-        localStorage.setItem("userName", username);
-        navigate("/profile");
-        }
-        else{
+        if (userInfoResponse.message) {
+          const username = userInfoResponse.message.split("User found: ")[1];
+          toast.success("Đăng nhập thành công");
+          localStorage.setItem("userName", username);
+          navigate("/profile");
+        } else {
           throw new Error("Something went wroong");
         }
       }

@@ -7,31 +7,24 @@ import { MdPushPin } from "react-icons/md";
 import { FiSettings } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
-const RecentChat = ({ onSelectChat, selectedUser }) => {
-  const [searchQuery, setSearchQuery] = useState(""); // Thêm trạng thái tìm kiếm
+const RecentChat = ({ onSelectChat, selectedUser, chats }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  const chats = [
-    { name: "Triết", lastMessage: "Hello", time: "5 mins", unread: 0 },
-    {
-      name: "Family Group(5)",
-      lastMessage: "Mom sent a sticker",
-      time: "1 h",
-      unread: 0,
-      isSticker: true,
-    },
-    { name: "ABC", lastMessage: "Hello", time: "5 h", unread: 0 },
-    {
-      name: "ACd",
-      lastMessage: "ACd sent a sticker",
-      time: "1 h",
-      unread: 0,
-      isSticker: true,
-    },
-    { name: "Tài", lastMessage: "Cho vay 5 cú với", time: "5 h", unread: 0 },
-  ];
+  const truncateUserName = (userName, maxLength = 10) => {
+    if (userName.length > maxLength) {
+      return userName.substring(0, maxLength - 3) + "...";
+    }
+    return userName;
+  };
 
-  // Lọc danh sách chats dựa trên searchQuery
+  const truncateMessage = (message, maxLength = 20) => {
+    if (message.length > maxLength) {
+      return "Đã gửi tin nhắn";
+    }
+    return message;
+  };
+
   const filteredChats = chats.filter((chat) =>
     chat.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -52,7 +45,10 @@ const RecentChat = ({ onSelectChat, selectedUser }) => {
               <h1>Phuc Le Quang</h1>
             </div>
             <p>@Present!!!</p>
-            <a href="instagram.com/present!!!" className="instagram-link">
+            <a
+              href="https://instagram.com/present!!!"
+              className="instagram-link"
+            >
               instagram.com/present!!!
             </a>
           </div>
@@ -65,7 +61,7 @@ const RecentChat = ({ onSelectChat, selectedUser }) => {
             type="text"
             placeholder="Search for a chat..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)} // Cập nhật giá trị tìm kiếm
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
@@ -90,17 +86,22 @@ const RecentChat = ({ onSelectChat, selectedUser }) => {
                     <h4>{chat.name}</h4>
                     <div className="last-message-row">
                       <p>
+                        <span className="username">
+                          {truncateUserName(chat.userName)}:
+                        </span>{" "}
                         {chat.isSticker ? (
                           <span className="sticker-label">sticker</span>
                         ) : (
-                          chat.lastMessage
+                          <span className="message-content">
+                            {truncateMessage(chat.lastMessage)}
+                          </span>
                         )}
                       </p>
                       <span className="time">{chat.time}</span>
                     </div>
                   </div>
                   <div className="chat-meta">
-                    <FaCircle className="online-icon" />{" "}
+                    <FaCircle className="online-icon" />
                   </div>
                 </div>
               </div>

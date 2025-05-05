@@ -9,12 +9,15 @@ import { FaPencilAlt } from "react-icons/fa";
 import { TbMessageReply } from "react-icons/tb";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { connectWebSocket, sendMessage } from "../../../services/webSocket";
-import {fetchMessages} from "../../../services/chatService"
+import { fetchMessages } from "../../../services/chatService";
 
-const ChatInfo = ({ avatar, selectedUser }) => {
+const ChatInfo = ({ avatar, selectedUser, onUpdateChat }) => {
   const [messages, setMessages] = useState([]);
-
-
+  const [inputText, setInputText] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [replyingTo, setReplyingTo] = useState(null);
 
   const getDayAbbreviation = (isoString) => {
     if (!isoString) return "";
@@ -22,82 +25,106 @@ const ChatInfo = ({ avatar, selectedUser }) => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     return days[date.getDay()];
   };
-  
-
-  
-
 
   useEffect(() => {
-
-
     const loadOldMessages = async () => {
-      const oldMessages = await fetchMessages("1"); 
-      const mappedMessages = oldMessages.map(msg => {
+      const oldMessages = await fetchMessages("1");
+      const mappedMessages = oldMessages.map((msg) => {
         const dateObj = new Date(msg.timeStamp);
         return {
-          id: Date.now() + Math.random(), 
+          id: Date.now() + Math.random(),
           text: msg.content,
           sender: msg.sender,
-          type: msg.sender === localStorage.getItem("userName") ? "sent" : "received",
+          type:
+            msg.sender === localStorage.getItem("userName")
+              ? "sent"
+              : "received",
           timeStamp: msg.timeStamp,
           day: getDayAbbreviation(msg.timeStamp),
-          timestamp: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          timestamp: dateObj.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
         };
       });
       setMessages(mappedMessages);
+
+      // Cập nhật RecentChat với tin nhắn mới nhất
+      if (mappedMessages.length > 0) {
+        const lastMessage = mappedMessages[mappedMessages.length - 1];
+        onUpdateChat({
+          name: selectedUser,
+          lastMessage: lastMessage.text,
+          userName:
+            lastMessage.sender === localStorage.getItem("userName")
+              ? "Bạn"
+              : lastMessage.sender,
+          time: lastMessage.timestamp,
+        });
+      }
     };
-  
+
     loadOldMessages();
 
-
     connectWebSocket("1", (msg) => {
-      console.log(msg);
       const dateObj = new Date(msg.timeStamp);
       const newMsg = {
-        id: Date.now() + Math.random(), 
+        id: Date.now() + Math.random(),
         text: msg.content,
         sender: msg.sender,
-        type: msg.sender === localStorage.getItem("userName") ? "sent" : "received",
+        type:
+          msg.sender === localStorage.getItem("userName") ? "sent" : "received",
         timeStamp: msg.timeStamp,
         day: getDayAbbreviation(msg.timeStamp),
-        timestamp: dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        timestamp: dateObj.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       };
-  
+
       setMessages((prev) => [...prev, newMsg]);
+
+      // Cập nhật RecentChat khi nhận tin nhắn mới
+      onUpdateChat({
+        name: selectedUser,
+        lastMessage: newMsg.text,
+        userName:
+          newMsg.sender === localStorage.getItem("userName")
+            ? "Bạn"
+            : newMsg.sender,
+        time: newMsg.timestamp,
+      });
     });
-  }, []);
-
-
-  
+  }, [selectedUser, onUpdateChat]);
 
   const handleSendMessage = () => {
-    sendMessage("1", inputText, localStorage.getItem("userName"));
-    setInputText("");
-};
+    if (inputText.trim()) {
+      sendMessage("1", inputText, localStorage.getItem("userName"));
+      const dateObj = new Date();
+      const timestamp = dateObj.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
 
+      // Cập nhật RecentChat khi gửi tin nhắn
+      onUpdateChat({
+        name: selectedUser,
+        lastMessage: inputText,
+        userName: "Bạn",
+        time: timestamp,
+      });
 
-  const [inputText, setInputText] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [showDetails, setShowDetails] = useState(false);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [replyingTo, setReplyingTo] = useState(null);
+      setInputText("");
+    }
+  };
 
-  // Extract unique images from messages, including avatar
   const getChatImages = () => {
     const images = new Set();
     messages.forEach((msg) => {
-      if (msg.image) {
-        images.add(msg.image);
-      }
-      if (msg.avatar) {
-        images.add(msg.avatar);
-      }
-      if (msg.replyTo && msg.replyTo.image) {
-        images.add(msg.replyTo.image);
-      }
-      if (msg.replyTo && msg.replyTo.avatar) {
-        images.add(msg.replyTo.avatar);
-      }
+      if (msg.image) images.add(msg.image);
+      if (msg.avatar) images.add(msg.avatar);
+      if (msg.replyTo && msg.replyTo.image) images.add(msg.replyTo.image);
+      if (msg.replyTo && msg.replyTo.avatar) images.add(msg.replyTo.avatar);
     });
     return Array.from(images);
   };
@@ -123,7 +150,7 @@ const ChatInfo = ({ avatar, selectedUser }) => {
     if (message) {
       setReplyingTo({
         id: message.id,
-        sender: message.type === "sent" ? "You" : selectedUser,
+        sender: message.type === "sent" ? "Bạn" : selectedUser,
         text: message.text,
         image: message.image || null,
         avatar: message.avatar || null,
@@ -149,7 +176,6 @@ const ChatInfo = ({ avatar, selectedUser }) => {
   const closeImagePreview = () => {
     setPreviewImage(null);
   };
-
 
   return (
     <>
@@ -365,7 +391,7 @@ const ChatInfo = ({ avatar, selectedUser }) => {
                           className="media-image"
                           onClick={() => openImagePreview(image)}
                           onError={(e) => {
-                            e.target.style.display = "none"; // Hide broken images
+                            e.target.style.display = "none";
                           }}
                         />
                       ))

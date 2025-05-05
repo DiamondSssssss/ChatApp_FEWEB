@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
-import { auth } from "../../firebase";
-import { signInWithPhoneNumber, RecaptchaVerifier } from "firebase/auth";
-
-// const RECAPTCHA_SITE_KEY = "6Lfevh0rAAAAAGS0DEhGB6a5E4s6ckwkDZdDZCy_";
+import { login, getCurrentUser } from "../../services/auth";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [phone, setPhone] = useState("");
@@ -13,55 +11,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const setUpRecaptcha = async () => {
-    try {
-      console.log("Đang khởi tạo reCAPTCHA...");
-      window.recaptchaVerifier = new RecaptchaVerifier(
-        auth,
-        "recaptcha-container",
-        {
-          size: "normal",
-          callback: (response) => {
-            console.log("reCAPTCHA xác minh thành công, response:", response);
-            setMessage("reCAPTCHA đã được xác minh.");
-            setIsError(false);
-          },
-          "expired-callback": () => {
-            console.log("reCAPTCHA hết hạn.");
-            setMessage("reCAPTCHA hết hạn, vui lòng thử lại.");
-            setIsError(true);
-          },
-        }
-      );
-      console.log("Đang render reCAPTCHA...");
-      await window.recaptchaVerifier.render();
-      console.log("reCAPTCHA render thành công.");
-    } catch (error) {
-      console.error("Lỗi khi khởi tạo reCAPTCHA:", error);
-      setMessage(
-        "Không thể khởi tạo reCAPTCHA. Vui lòng thử lại hoặc dùng trình duyệt khác."
-      );
-      setIsError(true);
-    }
-  };
-
-  useEffect(() => {
-    setUpRecaptcha();
-    return () => {
-      if (window.recaptchaVerifier) {
-        try {
-          console.log("Đang dọn dẹp reCAPTCHA...");
-          window.recaptchaVerifier.clear();
-          console.log("reCAPTCHA đã được dọn dẹp.");
-        } catch (error) {
-          console.error("Lỗi khi dọn dẹp reCAPTCHA:", error);
-        }
-        window.recaptchaVerifier = null;
-      }
-    };
-  }, []);
-
-  const handleSendOtp = async () => {
+  const handleLogin = async () => {
     setIsLoading(true);
     setMessage("");
     setIsError(false);
@@ -76,49 +26,31 @@ const Login = () => {
     }
 
     try {
-      if (!window.recaptchaVerifier) {
-        console.error("reCAPTCHA chưa được khởi tạo.");
-        throw new Error("reCAPTCHA chưa được khởi tạo.");
+      const response = await login(formattedPhone);
+
+      const { message: serverMsg, accessToken, refreshToken } = response;
+      if (accessToken && refreshToken) {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
       }
 
-      console.log("Đang gửi OTP tới:", formattedPhone);
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        formattedPhone,
-        window.recaptchaVerifier
-      );
-
-      localStorage.setItem("phoneNumber", formattedPhone);
-      window.tempConfirmationResult = confirmationResult;
-
-      setMessage("OTP đã được gửi thành công!");
-      setIsError(false);
-      navigate("/verification");
-    } catch (error) {
-      console.error("Lỗi khi gửi OTP:", error);
-      const errorMessage =
-        {
-          "auth/too-many-requests": "Quá nhiều lần thử, vui lòng thử lại sau.",
-          "auth/invalid-phone-number": "Số điện thoại không hợp lệ.",
-          "auth/captcha-check-failed":
-            "Xác minh reCAPTCHA thất bại. Vui lòng thử lại hoặc dùng trình duyệt khác.",
-          default:
-            "Không thể gửi OTP: " +
-            (error.message || "Lỗi không xác định. Vui lòng thử lại."),
-        }[error.code] || error.message;
-      setMessage(errorMessage);
-      setIsError(true);
-
-      if (window.recaptchaVerifier) {
-        try {
-          console.log("Đang reset reCAPTCHA...");
-          const widgetId = await window.recaptchaVerifier.render();
-          window.grecaptcha?.reset(widgetId);
-          console.log("reCAPTCHA đã được reset.");
-        } catch (resetError) {
-          console.error("Lỗi khi reset reCAPTCHA:", resetError);
+      if (serverMsg === "New user, please register username") {
+        navigate("/user-setting");
+      } else {
+        const userInfoResponse = await getCurrentUser();
+        if (userInfoResponse.message) {
+          const username = userInfoResponse.message.split("User found: ")[1];
+          toast.success("Đăng nhập thành công");
+          localStorage.setItem("userName", username);
+          navigate("/profile");
+        } else {
+          throw new Error("Something went wroong");
         }
       }
+    } catch (error) {
+      console.error("Đăng nhập thất bại:", error);
+      setMessage(error.message || "Đăng nhập thất bại. Vui lòng thử lại.");
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }
@@ -155,7 +87,6 @@ const Login = () => {
             aria-label="Số điện thoại"
           />
         </div>
-        <div id="recaptcha-container"></div>
         {message && (
           <p
             role="alert"
@@ -166,11 +97,11 @@ const Login = () => {
         )}
         <button
           className="continue-button"
-          onClick={handleSendOtp}
+          onClick={handleLogin}
           disabled={isLoading}
-          aria-label="Gửi OTP"
+          aria-label="Tiếp tục"
         >
-          {isLoading ? "Đang gửi..." : "Tiếp tục"}
+          {isLoading ? "Đang xử lý..." : "Tiếp tục"}
         </button>
       </div>
       <div className="right-section">

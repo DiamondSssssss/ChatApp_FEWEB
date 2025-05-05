@@ -3,15 +3,16 @@ import "./Profile.scss";
 import { FaCamera } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import { FiSettings } from "react-icons/fi";
-
+import { useNavigate } from "react-router-dom";
 const Profile = () => {
+    const navigate = useNavigate();
     return (
         <div className="profile-container">
             {/* Header */}
             <div className="profile-header">
-                <IoArrowBack className="back-arrow" />
+                <IoArrowBack className="back-arrow" onClick={()=>navigate("/chat")} />
                 <h1>Account</h1>
-                <FiSettings className="settings-icon" />
+                <FiSettings className="settings-icon" onClick={()=>navigate("/setting")}/>
             </div>
 
             <hr className="divider" />
@@ -29,7 +30,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="user-details">
-                    <h2>Phuc Le Quang</h2>
+                    <h2>{localStorage.getItem("userName")}</h2>
                     <p className="username">@Present111</p>
                     <a
                         href="https://instagram.com/present111"
@@ -44,6 +45,7 @@ const Profile = () => {
 
             {/* Options */}
             <div className="profile-options">
+            <button className="option-btn" onClick={() => navigate("/chat")}>Start Chatting</button>
                 <button className="option-btn">Take a photo</button>
                 <button className="option-btn">Select from library</button>
                 <button className="option-btn cancel">Cancel</button>

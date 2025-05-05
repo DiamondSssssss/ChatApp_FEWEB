@@ -34,7 +34,7 @@ const RecentChat = ({ onSelectChat, selectedUser, chats }) => {
       <div className="chat-header">
         <div className="profile-info">
           <div className="header-avatar">
-            <img src={defaultAvatar} alt="Profile" />
+            <img onClick={()=>navigate("/profile")} src={defaultAvatar} alt="Profile" />
           </div>
           <div className="header-text">
             <div className="header-name-with-icon">
@@ -42,7 +42,7 @@ const RecentChat = ({ onSelectChat, selectedUser, chats }) => {
                 style={{ color: "white", fontSize: "20px", cursor: "pointer" }}
                 onClick={() => navigate("/setting")}
               />
-              <h1>Phuc Le Quang</h1>
+              <h1 >{localStorage.getItem("userName")}</h1>
             </div>
             <p>@Present!!!</p>
             <a

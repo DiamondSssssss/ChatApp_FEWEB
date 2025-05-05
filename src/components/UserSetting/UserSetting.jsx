@@ -23,7 +23,7 @@ const UserSetting = () => {
       const username = userInfoResponse.message.split("User found: ")[1];
       toast.success("Đăng ký thành công");
       localStorage.setItem("userName", username);
-      navigate("/login");
+      navigate("/setting");
     } else {
       toast.error("Đăng ký thất bại");
     }

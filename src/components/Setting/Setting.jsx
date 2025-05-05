@@ -42,7 +42,7 @@ const Setting = () => {
         <div className="account-info">
           <img src="/avatar.png" alt="User Avatar" className="avatar" />
           <div className="user-details">
-            <h3>Phuc Le Quang</h3>
+            <h3>{localStorage.getItem("userName")}</h3>
             <p className="username">@Present111</p>
             <a
               href="https://instagram.com/present111"

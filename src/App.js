@@ -27,16 +27,11 @@ import InviteFriend from "./components/InviteFriend/InviteFriend";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const ProtectedRoute = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  return accessToken ? <Outlet /> : <Navigate to="/" replace />;
-};
-
 const App = () => {
 
 
   const ProtectedRoute = () => {
-    const username = localStorage.getItem("username");
+    const username = localStorage.getItem("userName");
     return username ? <Outlet /> : <Navigate to="/" replace />;
   };
   return (

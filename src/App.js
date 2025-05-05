@@ -33,36 +33,45 @@ const ProtectedRoute = () => {
 };
 
 const App = () => {
+
+
+  const ProtectedRoute = () => {
+    const username = localStorage.getItem("username");
+    return username ? <Outlet /> : <Navigate to="/" replace />;
+  };
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<GetStarted />} />
-        <Route path="/get-started" element={<GetStarted />} />
-        <Route path="/login" element={<Login />} />
+  <Routes>
+    {/* Public routes */}
+    <Route path="/" element={<GetStarted />} />
+    <Route path="/get-started" element={<GetStarted />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/verification" element={<Verification />} />
+    <Route path="/user-setting" element={<UserSetting />} />
 
-        {/* <Route element={<ProtectedRoute />}> */}
-        <Route path="/verification" element={<Verification />} />
-        <Route path="/user-setting" element={<UserSetting />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/chat-info" element={<ChatInfo />} />
-        <Route path="/friend-list" element={<FriendList />} />
-        <Route path="/recent-chat" element={<RecentChat />} />
-        <Route path="/social-hub" element={<SocialHub />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/setting" element={<Setting />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/appearance" element={<Appearance />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/pincode-set" element={<SetPinCode />} />
-        <Route path="/pincode-confirm" element={<ConfirmPinCode />} />
-        <Route path="/invite-friend" element={<InviteFriend />} />
-        {/* </Route> */}
+    {/* Protected routes */}
+    <Route element={<ProtectedRoute />}>
+      <Route path="/chat" element={<Chat />} />
+      <Route path="/chat-info" element={<ChatInfo />} />
+      <Route path="/friend-list" element={<FriendList />} />
+      <Route path="/recent-chat" element={<RecentChat />} />
+      <Route path="/social-hub" element={<SocialHub />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/setting" element={<Setting />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/notification" element={<Notification />} />
+      <Route path="/appearance" element={<Appearance />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/pincode-set" element={<SetPinCode />} />
+      <Route path="/pincode-confirm" element={<ConfirmPinCode />} />
+      <Route path="/invite-friend" element={<InviteFriend />} />
+    </Route>
 
-        <Route path="*" element={<div>Not Found</div>} />
-      </Routes>
-      <ToastContainer />
-    </BrowserRouter>
+    <Route path="*" element={<div>Not Found</div>} />
+  </Routes>
+  <ToastContainer />
+</BrowserRouter>
+
   );
 };
 

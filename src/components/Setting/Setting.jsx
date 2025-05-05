@@ -1,5 +1,6 @@
 import React from "react";
 import "./Setting.scss";
+import {logout} from "../../services/auth"
 import {
   FaShieldAlt,
   FaBell,
@@ -8,11 +9,22 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 const Setting = () => {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
+  const handleLogout =async () => {
+    
+    var msg=await logout();
+    if(msg.status==200)
+    {
+        localStorage.clear();
+        navigate("/login");
+        toast.success("Logout success");
+
+    }
+    else{
+        toast.error("Logout fail");
+    }
   };
   return (
     <div className="settings-container">

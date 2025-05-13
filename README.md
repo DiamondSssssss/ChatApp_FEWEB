@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Note
+
+The function of sending SMS and verifying phone number is in Phuc branch due to expired invoice problem. You can use pre-registered numbers such as 0889378931, 088937892, 0889378933, 0889378934 with OTP code 123456.
+
 ## Available Scripts
 
 In the project directory, you can run:

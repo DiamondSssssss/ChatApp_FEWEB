@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
-import { login, getCurrentUser } from "../../services/auth";
 import { toast } from "react-toastify";
+
+import { auth } from "../../firebase";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 
 const Login = () => {
   const [phone, setPhone] = useState("");
@@ -26,32 +28,30 @@ const Login = () => {
     }
 
     try {
-      const response = await login(formattedPhone);
-
-      const { message: serverMsg, accessToken, refreshToken } = response;
-      if (accessToken && refreshToken) {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+      // Chỉ tạo reCAPTCHA một lần
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha", {
+          size: "invisible",
+          callback: () => {},
+        });
       }
 
-      if (serverMsg === "New user, please register username") {
-        localStorage.setItem("phoneNumber", formattedPhone);
-        toast.success("Mời bạn đang ký tên người dùng");
-        navigate("/user-setting");
-      } else {
-        const userInfoResponse = await getCurrentUser();
-        if (userInfoResponse.message) {
-          const username = userInfoResponse.message.split("User found: ")[1];
-          toast.success("Đăng nhập thành công");
-          localStorage.setItem("userName", username);
-          navigate("/profile");
-        } else {
-          throw new Error("Something went wroong");
-        }
-      }
+      const appVerifier = window.recaptchaVerifier;
+
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        formattedPhone,
+        appVerifier
+      );
+
+      window.confirmationResult = confirmationResult;
+      localStorage.setItem("phoneNumber", formattedPhone);
+
+      toast.success("Đã gửi mã xác thực tới điện thoại.");
+      navigate("/verification");
     } catch (error) {
-      console.error("Đăng nhập thất bại:", error);
-      setMessage(error.message || "Đăng nhập thất bại. Vui lòng thử lại.");
+      console.error("Gửi OTP thất bại:", error);
+      setMessage("Không gửi được mã OTP. Vui lòng thử lại.");
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -105,6 +105,7 @@ const Login = () => {
         >
           {isLoading ? "Đang xử lý..." : "Tiếp tục"}
         </button>
+        <div id="recaptcha"></div>
       </div>
       <div className="right-section">
         <img src="/login.png" alt="Hình minh họa" />

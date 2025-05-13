@@ -13,11 +13,9 @@ const Verification = () => {
   const inputRefs = useRef([]);
   const navigate = useNavigate();
 
-  // Retrieve phone number stored in Login
   const phoneNumber = localStorage.getItem("phoneNumber");
 
   useEffect(() => {
-    // Focus first input on mount
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
@@ -56,18 +54,17 @@ const Verification = () => {
     setIsError(false);
 
     try {
-      // Confirm OTP with Firebase
-      const confirmationResult = window.tempConfirmationResult;
+      const confirmationResult = window.confirmationResult;
       if (!confirmationResult) {
         throw new Error("Không tìm thấy session xác thực. Vui lòng thử lại.");
       }
-      await confirmationResult.confirm(otp);
-      // Call your login API
-      const response = await login(phoneNumber);
-      // const data = await response.json();
 
-      // Assuming API returns { message, accessToken, refreshToken }
+      await confirmationResult.confirm(otp);
+
+      // ✅ Gọi API login sau khi xác thực Firebase thành công
+      const response = await login(phoneNumber);
       const { message: serverMsg, accessToken, refreshToken } = response;
+
       if (accessToken && refreshToken) {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
@@ -83,7 +80,7 @@ const Verification = () => {
           localStorage.setItem("userName", username);
           navigate("/profile");
         } else {
-          throw new Error("Something went wroong");
+          throw new Error("Không lấy được thông tin người dùng.");
         }
       }
     } catch (error) {
@@ -113,6 +110,7 @@ const Verification = () => {
         <h2>Nhập mã xác thực</h2>
         <p>Chúng tôi đã gửi mã xác thực đến</p>
         <p className="phone-number">{phoneNumber}</p>
+
         <div className="code-inputs">
           {code.map((digit, idx) => (
             <input
@@ -130,6 +128,7 @@ const Verification = () => {
             />
           ))}
         </div>
+
         {message && (
           <p
             role="alert"
@@ -138,6 +137,7 @@ const Verification = () => {
             {message}
           </p>
         )}
+
         <button
           className="continue-button"
           onClick={handleVerify}
@@ -146,6 +146,7 @@ const Verification = () => {
         >
           {isLoading ? "Đang xác thực..." : "Xác thực"}
         </button>
+
         <p className="resend-text">
           Chưa nhận được mã?{" "}
           <span

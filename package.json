@@ -10,7 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "customize-cra": "^1.0.0",
-    "firebase": "^11.6.0",
+    "firebase": "^11.7.1",
     "lucide-react": "^0.482.0",
     "react": "^19.0.0",
     "react-app-rewired": "^2.2.1",
